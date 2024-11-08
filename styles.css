@@ -13,16 +13,16 @@ body {
     padding-top: 20px;
     box-shadow: 2px 0 5px rgba(0,0,0,0.1);
   }
-  .sidebar .nav-link {
+  .sidebar .nav-link, .offcanvas-body .nav-item {
     color: #171a1d;
     margin: 10px 15px;
   }
-  .sidebar .nav-link:hover {
+  .sidebar .nav-link:hover, .offcanvas-body .nav-item:hover{
     color: #fff;
     background-color: #a9d9ca;
     border-radius: 25px; /* Increased border-radius */
   }
-  .sidebar .nav-link.active {
+  .sidebar .nav-link.active, .offcanvas-body .nav-item.active {
     background-color: #a9d9ca;
     color: #171a1d;
     border-radius: 25px; /* Increased border-radius */
@@ -38,3 +38,4 @@ body {
     margin-top: 56px; /* Height of navbar */
     padding: 20px;
   }
+ 
