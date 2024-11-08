@@ -34,7 +34,7 @@ body {
     }
   }
   .content {
-    margin-left: 250px; /* Width of sidebar */
+    /* margin-left: 250px; Width of sidebar */
     margin-top: 56px; /* Height of navbar */
     padding: 20px;
   }
