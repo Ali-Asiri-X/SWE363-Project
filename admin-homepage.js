@@ -1,29 +1,68 @@
 document.addEventListener('DOMContentLoaded', function () {
     var addUserForm = document.getElementById('addUserForm');
-    var passwordHelp = document.createElement('small');
-    passwordHelp.id = 'passwordHelp';
-    passwordHelp.classList.add('form-text', 'text-muted');
-    passwordHelp.textContent = 'Password must be at least 8 characters long, contain uppercase and lowercase letters, a number, and a special character.';
-    addUserForm.querySelector('.form-group.mb-3:nth-child(2)').appendChild(passwordHelp);
+    var usernameInput = document.getElementById('username');
+    var passwordInput = document.getElementById('password');
+    var passwordHelp = document.createElement('div');
+    passwordHelp.className = 'invalid-feedback';
+    passwordInput.parentNode.appendChild(passwordHelp);
 
-    addUserForm.addEventListener('submit', function (event) {
-        event.preventDefault(); // Prevent form submission
-
-        var username = document.getElementById('username').value;
-        var password = document.getElementById('password').value;
-
-        var passwordValid = validatePassword(password);
-
-        if (!passwordValid) {
-            passwordHelp.style.color = 'red';
+    // Real-time validation for username
+    usernameInput.addEventListener('input', function () {
+        if (usernameInput.value.trim() === '') {
+            usernameInput.classList.add('is-invalid');
         } else {
-            passwordHelp.style.color = 'green';
-            addUser(username);
-            // Clear the input fields
-            document.getElementById('username').value = '';
-            document.getElementById('password').value = '';
+            usernameInput.classList.remove('is-invalid');
+            usernameInput.classList.add('is-valid');
         }
     });
+
+    // Real-time validation for password
+    passwordInput.addEventListener('input', function () {
+        var passwordValid = validatePassword(passwordInput.value.trim());
+        if (!passwordValid.isValid) {
+            passwordInput.classList.add('is-invalid');
+            passwordHelp.innerHTML = passwordValid.message.join('<br>');
+        } else {
+            passwordInput.classList.remove('is-invalid');
+            passwordInput.classList.add('is-valid');
+            passwordHelp.innerHTML = '';
+        }
+    });
+
+    addUserForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        // Validate username
+        if (usernameInput.value.trim() === '') {
+            usernameInput.classList.add('is-invalid');
+        } else {
+            usernameInput.classList.remove('is-invalid');
+            usernameInput.classList.add('is-valid');
+        }
+
+        // Validate password
+        var passwordValid = validatePassword(passwordInput.value.trim());
+        if (!passwordValid.isValid) {
+            passwordInput.classList.add('is-invalid');
+            passwordHelp.innerHTML = passwordValid.message.join('<br>');
+        } else {
+            passwordInput.classList.remove('is-invalid');
+            passwordInput.classList.add('is-valid');
+        }
+
+        if (addUserForm.checkValidity() === false || !passwordValid.isValid) {
+            addUserForm.classList.add('was-validated');
+        } else {
+            addUser(usernameInput.value.trim());
+            // Clear the input fields
+            usernameInput.value = '';
+            passwordInput.value = '';
+            usernameInput.classList.remove('is-valid');
+            passwordInput.classList.remove('is-valid');
+            addUserForm.classList.remove('was-validated');
+        }
+    }, false);
 
     function validatePassword(password) {
         var minLength = 8;
@@ -32,7 +71,27 @@ document.addEventListener('DOMContentLoaded', function () {
         var hasNumbers = /\d/.test(password);
         var hasSpecialChars = /[!@#$%^&*(),.?":{}|<>]/.test(password);
 
-        return password.length >= minLength && hasUpperCase && hasLowerCase && hasNumbers && hasSpecialChars;
+        var errors = [];
+        if (password.length < minLength) {
+            errors.push('Password must be at least 8 characters long.');
+        }
+        if (!hasUpperCase) {
+            errors.push('Password must contain an uppercase letter.');
+        }
+        if (!hasLowerCase) {
+            errors.push('Password must contain a lowercase letter.');
+        }
+        if (!hasNumbers) {
+            errors.push('Password must contain a number.');
+        }
+        if (!hasSpecialChars) {
+            errors.push('Password must contain a special character.');
+        }
+
+        return {
+            isValid: errors.length === 0,
+            message: errors
+        };
     }
 
     function addUser(username) {
