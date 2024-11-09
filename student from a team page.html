@@ -86,11 +86,50 @@
                     </select>
                 </label>
 
+      <!--start of changes-->    
                 
                 <div class="button-group">
-                    <button type="button" class="button add-theme-button">Add a Theme</button>
+                    <button type="button" class="button add-theme-button" id="displayAddThemeButton" onclick="displayAddTheme()">Add a Theme</button>
                     <button type="submit" class="button create-scheme-button">Create the Team Scheme</button>
                 </div>
+                
+                <!-- popup script-->
+
+
+                <script>
+                    var div = document.createElement('div');
+                    function displayAddTheme() {
+
+                        var htmlString = '<div class="style_PopUpCard__mgUyL" id="addThemePopup"><div class="style_header__CISD2"><div></div><text class="text_Heading__Zkgao"> Add a Theme to the Scheme </text><div></div></div><div class="style_ContainerVertical3__RZI+U"><text class="text_Small__HQ874">Name</text><input class="style_InputField3__nYn-d" placeholder="Theme"><text class="text_Small__HQ874">Description</text><input class="style_InputBox2__GOJuP" placeholder="Enter a description"><button class="style_AddButton__+XuWL" id="addThemeButton" onclick="closeAddTheme()">Add</button></div></div>';
+
+                        var div = document.createElement('div');
+                        div.innerHTML = htmlString.trim();
+
+                        var button = document.getElementById("displayAddThemeButton");
+
+                        if (button.style.display!="none") {
+                            document.getElementById("mainBody").appendChild(div);
+                            button.style.display = "none";
+                        }
+                        
+                    }
+
+                    function closeAddTheme() {
+
+        
+                        var button1 = document.getElementById("displayAddThemeButton");
+
+                        var card = document.getElementById("addThemePopup");
+                        if (button1.style.display == "none") {
+                            card.parentNode.removeChild(card);
+                            button1.style.display = "inline";
+                        }
+
+                    }
+
+
+                </script>
+<!--end of changes-->
                 
             </form>
         </section>
