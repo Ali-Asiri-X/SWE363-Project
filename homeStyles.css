@@ -4,6 +4,7 @@ body {
 .sidebar {
     min-width: 250px;
     max-width: 250px;
+    
     height: 100vh;
     position: fixed;
     top: 56px; /* Height of navbar */
@@ -33,9 +34,17 @@ body {
       display: none;
     }
   }
+  
   .content {
     /* margin-left: 250px; Width of sidebar */
     margin-top: 56px; /* Height of navbar */
     padding: 20px;
+}
+@media (min-width: 992px) {
+  .content {
+    /* margin-left: 250px; Width of sidebar */
+    position: relative;
+    left: 250px;
+    display: inline-block;
   }
- 
+}
