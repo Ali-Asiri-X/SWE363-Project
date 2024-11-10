@@ -62,7 +62,7 @@
     <main class="px-md-4 content">
         <div class="d-flex align-items-center mb-4">
             <img src="account_circle.svg" class="rounded-circle me-3" alt="Profile Picture">
-            <div id = "userInfo">
+            <div id="userInfo">
                 <h2 class="mb-1"><strong>John Doe</strong></h2>
                 <p class="mb-1">WhatsApp: +1234567890</p>
                 <p class="mb-1">Major: Computer Science</p>
@@ -71,7 +71,7 @@
             </div>
         </div>
         <!-- My Team Members Card -->
-        <div class="card mb-4">
+        <div class="card mb-4" id="myTeamMembers">
             <div class="card-header">
                 <h4>My Team Members</h4>
             </div>
@@ -79,19 +79,25 @@
                 <!-- Team Member 1 -->
                 <div class="d-flex align-items-center mb-3">
                     <img src="person.svg" class="rounded-circle me-3" alt="Member Picture">
-                    <div>
+                    <div class="details">
                         <h5 class="mb-1">Jane Doe</h5>
                         <p class="mb-1">Major: Information Technology</p>
                     </div>
-                    <div class="ms-auto d-flex flex-wrap gap-2"></div>
-                    <button class="btn btn-outline-success btn-sm btn-md-normal me-2"><i
-                            class="fab fa-whatsapp"></i></button>
-                    <button class="btn btn-outline-danger btn-sm btn-md-normal"><i class="fas fa-trash"></i></button>
+                    <div class="ms-auto d-flex flex-wrap gap-2">
+                        <a href="https://wa.me/+966507113611" target="_blank">
+                            <button class="btn btn-outline-success btn-sm btn-md-normal me-2">
+                                <i class="fab fa-whatsapp"></i>
+                            </button>
+                        </a>
+                        <button class="btn btn-outline-danger btn-sm btn-md-normal delete">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
                 </div>
+                <!-- Add more team members similarly -->
             </div>
-            <!-- Add more team members similarly -->
         </div>
-        
+
 
         <div class="card mb-4">
             <div class="card-header">
@@ -100,18 +106,20 @@
             <div class="card-body"> <!-- Pending Request 1 -->
                 <div class="d-flex align-items-center mb-3">
                     <img src="person.svg" class="rounded-circle me-3" alt="Member Picture">
-                    <div>
+                    <div class="details">
                         <h5 class="mb-1">John Smith</h5>
                         <p class="mb-1">Major: Electrical Engineering</p>
                     </div>
                     <div class="ms-auto d-flex flex-wrap gap-2">
-                        <button class="btn btn-outline-success btn-sm btn-md-normal me-md-2">
-                            <i class="fab fa-whatsapp"></i>
-                        </button>
-                        <button class="btn btn-outline-success btn-sm btn-md-normal me-md-2">
+                        <a href="https://wa.me/+966507113611" target="_blank">
+                            <button class="btn btn-outline-success btn-sm btn-md-normal me-md-2">
+                                <i class="fab fa-whatsapp"></i>
+                            </button>
+                        </a>
+                        <button class="btn btn-outline-success btn-sm btn-md-normal me-md-2 accept">
                             <i class="fas fa-check"></i>
                         </button>
-                        <button class="btn btn-outline-danger btn-sm btn-md-normal">
+                        <button class="btn btn-outline-danger btn-sm btn-md-normal delete">
                             <i class="fas fa-trash"></i>
                         </button>
                     </div>
@@ -140,7 +148,8 @@
         </div>
 
         <!-- Edit Profile Modal -->
-        <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+        <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -163,7 +172,8 @@
                             </div>
                             <div class="mb-3">
                                 <label for="profileDescription" class="form-label">Description</label>
-                                <textarea class="form-control" id="profileDescription" rows="3">A brief description about John Doe. He is a dedicated student with a passion for software development and teamwork.</textarea>
+                                <textarea class="form-control" id="profileDescription"
+                                    rows="3">A brief description about John Doe. He is a dedicated student with a passion for software development and teamwork.</textarea>
                             </div>
                             <button type="submit" class="btn btn-success">Save changes</button>
                         </form>

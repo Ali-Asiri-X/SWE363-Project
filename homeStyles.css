@@ -1,10 +1,9 @@
 body {
     overflow-x: hidden;
-  }
+}
 .sidebar {
     min-width: 250px;
     max-width: 250px;
-    
     height: 100vh;
     position: fixed;
     top: 56px; /* Height of navbar */
@@ -13,38 +12,43 @@ body {
     color: #171212;
     padding-top: 20px;
     box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-  }
-  .sidebar .nav-link, .offcanvas-body .nav-item {
+}
+.sidebar .nav-link, .offcanvas-body .nav-item {
     color: #171a1d;
     margin: 10px 15px;
-  }
-  .sidebar .nav-link:hover, .offcanvas-body .nav-item:hover{
+}
+.sidebar .nav-link:hover, .offcanvas-body .nav-item:hover {
     color: #fff;
     background-color: #a9d9ca;
     border-radius: 25px; /* Increased border-radius */
-  }
-  .sidebar .nav-link.active, .offcanvas-body .nav-item.active {
+}
+.sidebar .nav-link.active, .offcanvas-body .nav-item.active {
     background-color: #a9d9ca;
     color: #171a1d;
     border-radius: 25px; /* Increased border-radius */
-  }
-  @media (max-width: 992px) {
+}
+@media (max-width: 992px) {
     /* Hide the sidebar by default on smaller screens */
     .sidebar {
-      display: none;
+        display: none;
     }
-  }
-  
-  .content {
-    /* margin-left: 250px; Width of sidebar */
+}
+.content {
     margin-top: 56px; /* Height of navbar */
     padding: 20px;
 }
 @media (min-width: 992px) {
-  .content {
-    /* margin-left: 250px; Width of sidebar */
-    position: relative;
-    left: 250px;
-    display: inline-block;
-  }
+    .content {
+        position: relative;
+        left: 250px;
+        display: inline-block;
+    }
+}
+
+/* Add hover effect for .details class */
+.details:hover {
+  padding: 0px 5px;
+  border-radius: 25px;
+    background-color: #a5c69b; 
+    cursor: pointer; /* Change cursor to pointer on hover */
 }
