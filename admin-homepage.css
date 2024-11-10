@@ -78,10 +78,11 @@ body {
 .card-container {
     display: flex;
     justify-content: space-between;
+    margin-top: 20px;
 }
 
 .user-card {
-    max-height: 300px;
+    max-height: 500px;
     width: 700px;
     overflow-y: auto;
 }
@@ -104,5 +105,11 @@ body {
 /* Ensure the card header has a background color */
 .card-header {
     background-color: #f8f9fa;
-    z-index: 1; /* Ensure the header stays above the content */
+    z-index: 1;
+    /* Ensure the header stays above the content */
+}
+
+.img-100 {
+    width: 100px;
+    height: 100px;
 }

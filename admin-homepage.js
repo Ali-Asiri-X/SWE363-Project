@@ -5,6 +5,9 @@ document.addEventListener('DOMContentLoaded', function () {
     var profileImageInput = document.getElementById('profileImage');
     var profileImagePreview = document.getElementById('profileImagePreview');
     var addUserForm = document.getElementById('addUserForm');
+    var newProfileImageInput = document.getElementById('newProfileImage');
+    var profilePic = document.getElementById('profilePic');
+    var editProfileForm = document.getElementById('editProfileForm');
 
     var passwordHelp = document.createElement('div');
     passwordHelp.className = 'invalid-feedback';
@@ -42,6 +45,28 @@ document.addEventListener('DOMContentLoaded', function () {
             };
             reader.readAsDataURL(file);
         }
+    });
+
+    editProfileForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (!editProfileForm.checkValidity()) {
+            e.stopPropagation();
+        } else {
+            const file = newProfileImageInput.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    profilePic.src = e.target.result;
+                    profilePic.style.width = '100px';
+                    profilePic.style.height = '100px';
+                };
+                reader.readAsDataURL(file);
+            }
+            // Hide the modal
+            const editProfileModal = bootstrap.Modal.getInstance(document.getElementById('editProfileModal'));
+            editProfileModal.hide();
+        }
+        editProfileForm.classList.add('was-validated');
     });
 
     addUserForm.addEventListener('submit', function (event) {
