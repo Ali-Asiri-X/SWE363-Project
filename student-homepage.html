@@ -19,74 +19,105 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <a class="navbar-brand ms-2" href="#">Team Builder</a>
-      <button class="btn btn-outline-success ms-auto" type="button">Edit Profile</button>
+      <button class="btn btn-outline-success ms-auto" type="button" id="editProfileBtn">Edit Profile</button>
     </div>
   </nav>
 
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="position-sticky pt-3">
+      <ul class="nav flex-column">
+        <li class="nav-item">
+          <a class="nav-link active" href="#">
+            Home
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+            Team Proposals
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
 
-      <!-- Sidebar -->
-      <nav class="sidebar">
-        <div class="position-sticky pt-3">
-          <ul class="nav flex-column">
-            <li class="nav-item">
-              <a class="nav-link active" href="#">
-                Home
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                Team Proposals
-              </a>
-            </li>
-          </ul>
-        </div>
-      </nav>
+  <!-- Offcanvas Sidebar for Small Screens -->
+  <div class="offcanvas offcanvas-start bg-light" tabindex="-1" id="offcanvasSidebar" aria-labelledby="offcanvasSidebarLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title text-dark" id="offcanvasSidebarLabel">Menu</h5>
+      <button type="button" class="btn-close btn-close-dark text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <ul class="nav flex-column">
+        <li class="nav-item">
+          <a class="nav-link active text-dark" href="#">
+            Home
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-dark" href="#">Team Proposals</a>
+        </li>
+      </ul>
+    </div>
+  </div>
 
-      <!-- Offcanvas Sidebar for Small Screens -->
-      <div class="offcanvas offcanvas-start bg-light" tabindex="-1" id="offcanvasSidebar" aria-labelledby="offcanvasSidebarLabel">
-        <div class="offcanvas-header">
-          <h5 class="offcanvas-title text-dark" id="offcanvasSidebarLabel">Menu</h5>
-          <button type="button" class="btn-close btn-close-dark text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body">
-          <ul class="nav flex-column">
-              
-              <li class="nav-item ">
-              <a class="nav-link active text-dark " href="#">
-                Home
-              </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-dark" href="#">Team Proposals</a>
-            </li>
-          </ul>
+  <!-- Main Content -->
+  <main class="px-md-4 content">
+    <div class="d-flex align-items-center mb-4">
+      <img src="account_circle.svg" class="rounded-circle me-3" alt="Profile Picture">
+      <div id="userInfo">
+        <h2 class="mb-1"><strong>John Doe</strong></h2>
+        <p class="mb-1">WhatsApp: +1234567890</p>
+        <p class="mb-1">Major: Computer Science</p>
+        <p class="mb-0">A brief description about John Doe. He is a dedicated student with a passion for software development and teamwork.</p>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-auto">
+          <button class="btn btn-outline-success btn-lg rounded-pill shadow w-100" style="max-width: 40rem; height: 4.5rem; margin-top: 20%; font-size: 1.5rem;">Create a team</button>
         </div>
       </div>
-      
-        <!-- Main Content -->
-        <main class="px-md-4 content">
-          <div class="d-flex align-items-center mb-4">
-            <img src="account_circle.svg" class="rounded-circle me-3" alt="Profile Picture">
-            <div>
-          <h2 class="mb-1"><strong>John Doe</strong></h2>
-          <p class="mb-1">WhatsApp: +1234567890</p>
-          <p class="mb-1">Major: Computer Science</p>
-          <p class="mb-0">A brief description about John Doe. He is a dedicated student with a passion for software development and teamwork.</p>
-            </div>
-          </div>
+    </div>
+  </main>
 
-          <div class="container">
-            <div class="row justify-content-center">
-          <div class="col-auto">
-            <button class="btn btn-outline-success btn-lg rounded-pill shadow w-100" style="max-width: 40rem; height: 4.5rem; margin-top: 20%; font-size: 1.5rem;">Create a team</button>
-          </div>
+  <!-- Edit Profile Modal -->
+  <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="editProfileForm">
+            <div class="mb-3">
+              <label for="profileName" class="form-label">Name</label>
+              <input type="text" class="form-control" id="profileName" value="John Doe">
             </div>
-          </div>
-        </main>
-    
-
+            <div class="mb-3">
+              <label for="profileWhatsApp" class="form-label">WhatsApp</label>
+              <input type="text" class="form-control" id="profileWhatsApp" value="+1234567890">
+            </div>
+            <div class="mb-3">
+              <label for="profileMajor" class="form-label">Major</label>
+              <input type="text" class="form-control" id="profileMajor" value="Computer Science">
+            </div>
+            <div class="mb-3">
+              <label for="profileDescription" class="form-label">Description</label>
+              <textarea class="form-control" id="profileDescription" rows="3">A brief description about John Doe. He is a dedicated student with a passion for software development and teamwork.</textarea>
+            </div>
+            <button type="submit" class="btn btn-success">Save changes</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Bootstrap JS Bundle (includes Popper) -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Custom JS -->
+  <script src="student-home-scripts.js"></script>
 </body>
 </html>
