@@ -113,3 +113,7 @@ body {
     width: 100px;
     height: 100px;
 }
+
+#editProfilePicture {
+    transform: translate(260%, -120%);
+}
