@@ -127,4 +127,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         userCardBody.appendChild(userItem);
     }
+
+    function deleteUser() {
+        
+    }
 });
