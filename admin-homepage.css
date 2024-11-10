@@ -100,3 +100,9 @@ body {
     height: 40px;
     margin-right: 10px;
 }
+
+/* Ensure the card header has a background color */
+.card-header {
+    background-color: #f8f9fa;
+    z-index: 1; /* Ensure the header stays above the content */
+}

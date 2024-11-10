@@ -73,6 +73,8 @@ document.addEventListener('DOMContentLoaded', function () {
             // Clear the input fields
             usernameInput.value = '';
             passwordInput.value = '';
+            profileImageInput.value = null;
+            profileImagePreview.src = "https://via.placeholder.com/40"
             usernameInput.classList.remove('is-valid');
             passwordInput.classList.remove('is-valid');
             addUserForm.classList.remove('was-validated');
