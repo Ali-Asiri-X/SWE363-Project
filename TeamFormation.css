@@ -56,6 +56,12 @@ code {
     margin-right: 10px;
 }
 
+@media (max-width: 500px) {
+    .style_DefaultButton {
+        font-family: "Lexend Deca";
+    }
+}
+
 .style_AddButton {
     cursor: pointer;
     top: 17px;
@@ -84,6 +90,7 @@ code {
         margin-right: 10%;
         margin-bottom: 20px;
         box-shadow: 0px 2px 8px rgba(0,0,0,0.25);
+        font-family: "Lexend Deca";
     }
 }
 
@@ -117,6 +124,7 @@ code {
         width: inherit;
         margin-left: auto;
         box-shadow: 0px 2px 8px rgba(0,0,0,0.25);
+        font-family: "Lexend Deca";
     }
 }
 
@@ -296,10 +304,12 @@ code {
 @media (max-width: 500px) {
     .style_InputField {
         box-shadow: 0px 2px 8px rgba(0,0,0,0.25);
+        font-family: "Lexend Deca";
     }
 
     .style_InputBox {
         box-shadow: 0px 2px 8px rgba(0,0,0,0.25);
+        font-family: "Lexend Deca";
     }
 }
 
@@ -488,11 +498,14 @@ code {
     .style_InputBox2 {
         width: 90%;
         box-shadow: 0px 2px 8px rgba(0,0,0,0.25);
+        font-family: "Lexend Deca";
+        
     }
 
     .style_InputField3 {
         width: 90%;
         box-shadow: 0px 2px 8px rgba(0,0,0,0.25);
+        font-family: "Lexend Deca";
     }
 }
 
@@ -554,6 +567,15 @@ code {
 @media (max-width: 500px) {
     .text_Title {
         margin-left: auto;
+        font-family: "Lexend Deca";
+    }
+
+    .text_Small {
+        font-family: "Lexend Deca";
+    }
+
+    .text_Heading {
+        font-family: "Lexend Deca";
     }
 }
 
