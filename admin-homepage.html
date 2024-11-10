@@ -75,7 +75,7 @@
                 </div>
             </nav>
             <!-- Offcanvas Sidebar for Small Screens -->
-            <div class="offcanvas offcanvas-start bg-light small-sidebar" tabindex="-1" id="offcanvasSidebar"
+            <div class="offcanvas offcanvas-start  small-sidebar" tabindex="-1" id="offcanvasSidebar"
                 aria-labelledby="offcanvasSidebarLabel">
                 <div class="offcanvas-header">
                     <h5 class="offcanvas-title text-dark" id="offcanvasSidebarLabel">Menu</h5>
@@ -122,17 +122,8 @@
                                 <button class="btn btn-danger btn-sm" aria-label="Delete Moderator">
                                     <i class="bi bi-trash"></i>
                                 </button>
-                            </div>
-                            <div class="user-item">
-                                <div class="d-flex align-items-center">
-                                    <img src="https://via.placeholder.com/40" alt="User 2">
-                                    <span>User 2</span>
-                                </div>
-                                <button class="btn btn-danger btn-sm" aria-label="Delete Moderator">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </div>
-                            Add more users as needed -->
+                            </div> -->
+                            <!-- Add more users as needed -->
                         </div>
                     </div>
                     <!-- Add User Card -->
@@ -153,10 +144,20 @@
                                     <input type="password" class="form-control" id="password"
                                         placeholder="Enter password" required>
                                 </div>
+                                <div class="form-group mb-3">
+                                    <label for="profileImage">Profile Image</label>
+                                    <input type="file" class="form-control" id="profileImage" accept="image/*" required>
+                                    <div class="invalid-feedback">Please upload a profile image.</div>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <img id="profileImagePreview" src="https://via.placeholder.com/40"
+                                        class="rounded-circle" alt="Profile Preview" width="40" height="40">
+                                </div>
                                 <button type="submit" class="btn btn-success w-100">Add</button>
                             </form>
                         </div>
                     </div>
+
                 </div>
             </main>
         </div>

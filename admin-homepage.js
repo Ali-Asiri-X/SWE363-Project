@@ -2,6 +2,10 @@ document.addEventListener('DOMContentLoaded', function () {
     var addUserForm = document.getElementById('addUserForm');
     var usernameInput = document.getElementById('username');
     var passwordInput = document.getElementById('password');
+    var profileImageInput = document.getElementById('profileImage');
+    var profileImagePreview = document.getElementById('profileImagePreview');
+    var addUserForm = document.getElementById('addUserForm');
+
     var passwordHelp = document.createElement('div');
     passwordHelp.className = 'invalid-feedback';
     passwordInput.parentNode.appendChild(passwordHelp);
@@ -26,6 +30,17 @@ document.addEventListener('DOMContentLoaded', function () {
             passwordInput.classList.remove('is-invalid');
             passwordInput.classList.add('is-valid');
             passwordHelp.innerHTML = '';
+        }
+    });
+
+    profileImageInput.addEventListener('change', function () {
+        const file = profileImageInput.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                profileImagePreview.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
         }
     });
 
@@ -104,7 +119,7 @@ document.addEventListener('DOMContentLoaded', function () {
         userContent.className = 'd-flex align-items-center';
 
         var userImage = document.createElement('img');
-        userImage.src = 'https://via.placeholder.com/40';
+        userImage.src = profileImagePreview.src;
         userImage.alt = username;
         userImage.className = 'me-3';
 
@@ -126,9 +141,5 @@ document.addEventListener('DOMContentLoaded', function () {
         userItem.appendChild(deleteButton);
 
         userCardBody.appendChild(userItem);
-    }
-
-    function deleteUser() {
-        
     }
 });

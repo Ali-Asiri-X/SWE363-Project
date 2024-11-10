@@ -26,7 +26,7 @@ body {
     top: 56px;
     /* Height of navbar */
     left: 0;
-    background-color: #1ccc86;
+    background-color: #cae6db;
     color: #171212;
     padding-top: 20px;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
@@ -55,6 +55,7 @@ body {
 }
 
 @media (max-width: 992px) {
+
     /* Hide the sidebar by default on smaller screens */
     .sidebar {
         display: none;
