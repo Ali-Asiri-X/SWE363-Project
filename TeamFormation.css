@@ -77,7 +77,7 @@ code {
     align-self: center;
 }
 
-@media only screen and (max-width: 500px) {
+@media (max-width: 500px) {
     .style_AddButton__\+XuWL {
         width: 90%;
         margin-top: 0px;
@@ -112,7 +112,7 @@ code {
     box-shadow: -2px 2px 0px rgba(0,0,0,0.25);
 }
 
-@media only screen and (max-width: 500px) {
+@media (max-width: 500px) {
     .style_WideButton__xqaOD {
         width: inherit;
         margin-left: auto;
@@ -137,7 +137,7 @@ code {
     box-shadow: 0px 0px 10px #030303;
 }
 
-@media only screen and (max-width: 500px) {
+@media (max-width: 500px) {
     .style_header__CISD2 {
         width: inherit;
         height: 74px;
@@ -165,7 +165,7 @@ code {
 }
 
 
-@media only screen and (max-width: 500px) {
+@media (max-width: 500px) {
     .style_LargeCard__mp0LC {
         width: 90%;
         height: 377px;
@@ -194,7 +194,7 @@ code {
 
 
 
-@media only screen and (max-width: 500px) {
+@media (max-width: 500px) {
     .style_MediumCard__wex3c {
         display: flex;
         width: 90%;
@@ -225,7 +225,7 @@ code {
 
 
 
-@media only screen and (max-width: 500px) {
+@media (max-width: 500px) {
     .style_SmallCard__tvNqf {
         height: 200px;
         width: 300px;
@@ -293,7 +293,7 @@ code {
 }
 
 
-@media only screen and (max-width: 500px) {
+@media (max-width: 500px) {
     .style_InputField__QOsl4 {
         box-shadow: 0px 2px 8px rgba(0,0,0,0.25);
     }
@@ -321,7 +321,7 @@ code {
 }
 
 
-@media only screen and (max-width: 500px) {
+@media (max-width: 500px) {
     .style_Image__j34Dm {
         width: 120px;
         height: 120px;
@@ -345,7 +345,7 @@ code {
 }
 
 
-@media only screen and (max-width: 500px) {
+@media (max-width: 500px) {
     .style_ContainerHorizontal__ZGkF9 {
         width: 100%;
         display: flex;
@@ -363,7 +363,7 @@ code {
     grid-gap: 20px;
 }
 
-@media only screen and (max-width: 500px) {
+@media (max-width: 500px) {
     .style_ContainerVertical__x5wae {
         grid-gap: 10px;
         padding: 10px;
