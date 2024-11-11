@@ -69,4 +69,34 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     });
+
+    const editProfilePicModalElement = document.getElementById('editProfilePicModal');
+    const editProfilePicModal = new bootstrap.Modal(editProfilePicModalElement);
+    const editProfilePicForm = document.getElementById('editProfilePicForm');
+    const profilePic = document.getElementById('profilePic');
+    const newProfileImageInput = document.getElementById('newProfileImage');
+
+    document.getElementById('editProfilePicture').addEventListener('click', function() {
+        editProfilePicModal.show();
+    });
+
+    editProfilePicForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        if (!editProfilePicForm.checkValidity()) {
+            event.stopPropagation();
+        } else {
+            const file = newProfileImageInput.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    profilePic.src = e.target.result;
+                    profilePic.style.width = '100px';
+                    profilePic.style.height = '100px';
+                };
+                reader.readAsDataURL(file);
+            }
+            editProfilePicModal.hide();
+        }
+        editProfilePicForm.classList.add('was-validated');
+    });
 });
