@@ -33,7 +33,6 @@ body {
     border-radius: 20px;
   }
 
-  
 /* styles for the footer */
 footer {
   display: flex;
@@ -303,4 +302,14 @@ footer {
   transform: translateX(-56px);
 }
 
+/* Remove arrows from number input */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance:textfield;/* For Firefox */
+}
 
