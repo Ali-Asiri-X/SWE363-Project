@@ -55,7 +55,6 @@ body {
 }
 
 @media (max-width: 992px) {
-
     /* Hide the sidebar by default on smaller screens */
     .sidebar {
         display: none;
@@ -77,14 +76,22 @@ body {
 
 .card-container {
     display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
+    flex-direction: column;
+    gap: 20px;
+}
+
+@media (min-width: 992px) {
+    .card-container {
+        flex-direction: row;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
 }
 
 .user-card {
     max-height: 500px;
-    width: 700px;
-    overflow-y: auto;
+    width: 100%;
+    overflow-y: auto; /* Enable vertical scrolling */
 }
 
 .user-item {
@@ -118,6 +125,6 @@ body {
     transform: translate(260%, -120%);
 }
 
-#toastConfirmation{
-    z-index: 5
+#toastConfirmation {
+    z-index: 5;
 }
