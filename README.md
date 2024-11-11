@@ -26,9 +26,9 @@ After cloning the project, you can use a live server extension, such as https://
 
 To start the correct flow of the website:
     Right click on loginPage.html and click "open with a Live server" then
-    - To view student pages enter (username = student, password = student)
-    - To view moderator pages enter (username = moderator, password = moderator)
-    - To view admin pages enter (username = admin, password = admin)
+    1) To view student pages enter (username = student, password = student)
+    2) To view moderator pages enter (username = moderator, password = moderator)
+    3) To view admin pages enter (username = admin, password = admin)
 
 
 ## Architecture
