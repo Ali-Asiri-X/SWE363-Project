@@ -150,7 +150,7 @@ code {
     width: auto;
     height: 74px;
     padding: 0px 10px;
-    box-shadow: 0px 0px 10px #030303;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 @media (max-width: 500px) {
@@ -177,7 +177,7 @@ code {
     padding-left: 20px;
     padding-top: 20px;
     margin: 30px;
-    box-shadow: 0px 0px 10px #030303;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 
@@ -205,8 +205,7 @@ code {
     padding-left: 20px;
     padding-top: 20px;
     margin: 30px;
-    box-shadow: 0px 0px 10px #030303;
-}
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 
 
 
@@ -268,7 +267,7 @@ code {
     line-height: 19px;
     outline: none;
     align-content: center;
-    box-shadow: 0px 0px 10px #030303;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .style_InputBox {
@@ -287,7 +286,7 @@ code {
     line-height: 19px;
     outline: none;
     text-align: initial;
-    box-shadow: 0px 0px 10px #030303;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 
@@ -317,7 +316,7 @@ code {
     margin-bottom: 5px;
     width: 100px;
     height: 100px;
-    box-shadow: 0px 0px 10px #030303;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 
