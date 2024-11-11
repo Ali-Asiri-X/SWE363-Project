@@ -10,6 +10,34 @@ document.addEventListener('DOMContentLoaded', function () {
             description: "A team focused on beta projects",
             majors: ["CS", "BA", "PH", "CH", "BI"]
         }
+        ,
+        {
+            name: "Team Beta",
+            description: "A team focused on beta projects",
+            majors: ["CS", "BA", "PH", "CH", "BI"]
+        }
+        ,
+        {
+            name: "Team Beta",
+            description: "A team focused on beta projects",
+            majors: ["CS", "BA", "PH", "CH", "BI"]
+        }
+        ,
+        {
+            name: "Team Beta",
+            description: "A team focused on beta projects",
+            majors: ["CS", "BA", "PH", "CH", "BI"]
+        },
+        {
+            name: "Team Beta",
+            description: "A team focused on beta projects",
+            majors: ["CS", "BA", "PH", "CH", "BI"]
+        },
+        {
+            name: "Team Beta",
+            description: "A team focused on beta projects",
+            majors: ["CS", "BA", "PH", "CH", "BI"]
+        }
         // Add more teams as needed
     ];
 
