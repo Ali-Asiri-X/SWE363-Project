@@ -62,3 +62,50 @@ body {
     transform: translate(250%, -120%);
     border-radius: 15px;
 }
+
+@media (max-width: 768px) {
+    /* .btn {
+        font-size: 1.2rem;
+        padding: 10px 20px;
+    } */
+    .details {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .team-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+    .team-actions button {
+        width: 48%;
+    }
+    .img-100 {
+        width: 80px;
+        height: 80px;
+    }
+    #editProfilePicture {
+        width: 25px;
+        height: 25px;
+        font-size: 0.6rem;
+    }
+    /* Adjust font size for smaller screens */
+    body, .sidebar .nav-link, .offcanvas-body .nav-item, .content {
+        font-size: 0.8rem;
+    }
+    /* Force buttons to be vertical */
+    .ms-auto.d-flex.flex-wrap.gap-2 {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+@media (max-width: 576px) {
+    /* Further adjust font size for even smaller screens */
+    body, .sidebar .nav-link, .offcanvas-body .nav-item, .content {
+        font-size: 0.8rem;
+    }
+    /* Force buttons to be vertical */
+    .ms-auto.d-flex.flex-wrap.gap-2 {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
