@@ -56,6 +56,10 @@ code {
     margin-right: 10px;
 }
 
+.style_DefaultButton:hover {
+    background-color: #1e5a28;
+}
+
 @media (max-width: 500px) {
     .style_DefaultButton {
         font-family: "Lexend Deca";
@@ -117,6 +121,10 @@ code {
     align-self: center;
     width: 212px;
     box-shadow: -2px 2px 0px rgba(0,0,0,0.25);
+}
+
+.style_WideButton:hover {
+    background-color: #1e5a28;
 }
 
 @media (max-width: 500px) {
@@ -385,6 +393,10 @@ code {
     outline: none;
     display:none;
     margin-right: auto;
+}
+
+.style_SideBarButton:hover {
+    background-color: #1e5a28;
 }
 
 .style_SideBarIcon {
