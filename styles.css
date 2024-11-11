@@ -139,6 +139,7 @@ footer {
     padding: 20px;
     box-sizing: border-box;
     justify-content: space-between;
+    display: none;
 }
 
 .footer-content {
@@ -414,6 +415,9 @@ footer {
     margin-top: 20px;
     margin-right: 10px;
     align-self: center;
+}
+.style_AddButton:hover {
+    background-color: #1e5a28;
 }
 
 @media (max-width: 500px) {
