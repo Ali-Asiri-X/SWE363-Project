@@ -189,6 +189,42 @@
         .add-button:hover {
             background-color: #45a049;
         }
+
+        @media (max-width: 992px) {
+            .sidebar {
+                display: none;
+            }
+
+            .container {
+                margin-left: 0;
+            }
+
+            .team-scheme {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 576px) {
+            h1 {
+                font-size: 20px;
+            }
+
+            h2 {
+                font-size: 18px;
+            }
+
+            .team-name {
+                font-size: 14px;
+            }
+
+            .tag,
+            .delete-button,
+            .add-button {
+                width: 30px;
+                height: 30px;
+                font-size: 12px;
+            }
+        }
     </style>
 </head>
 
