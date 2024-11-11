@@ -117,3 +117,7 @@ body {
 #editProfilePicture {
     transform: translate(260%, -120%);
 }
+
+#toastConfirmation{
+    z-index: 5
+}

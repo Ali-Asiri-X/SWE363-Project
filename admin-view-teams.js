@@ -51,7 +51,7 @@ function createCard(team, index) {
     card.className = 'col-md-6 mb-4';
 
     const cardContent = `
-        <div class="card shadow-sm">
+        <div class="card  shadow">
             <div class="card-body">
                 <h5 class="card-title">${team.name}</h5>
                 <p class="card-text">${team.description}</p>
