@@ -87,3 +87,7 @@ body {
     border: 1px solid #198754; /* Border with success color */
     background-color: transparent; /* Transparent background */
 }
+
+#toastConfirmation{
+    z-index: 5
+}

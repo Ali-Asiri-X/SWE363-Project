@@ -13,6 +13,8 @@ document.addEventListener('DOMContentLoaded', function () {
     passwordHelp.className = 'invalid-feedback';
     passwordInput.parentNode.appendChild(passwordHelp);
 
+    var currentDeleteItem = null; // Track the current item to be deleted
+
     // Real-time validation for username
     usernameInput.addEventListener('input', function () {
         if (usernameInput.value.trim() === '') {
@@ -144,7 +146,24 @@ document.addEventListener('DOMContentLoaded', function () {
         sampleUsers.forEach(user => addUser(user.username, user.imgSrc));
     }
 
-    loadSampleUsers()
+    loadSampleUsers();
+
+    function showDeleteToast(item) {
+        currentDeleteItem = item;
+        const toast = new bootstrap.Toast(document.getElementById('deleteToast'));
+        toast.show();
+    }
+
+    function deleteUser() {
+        if (currentDeleteItem) {
+            currentDeleteItem.parentNode.removeChild(currentDeleteItem);
+            const toast = bootstrap.Toast.getInstance(document.getElementById('deleteToast'));
+            toast.hide();
+            currentDeleteItem = null;
+        }
+    }
+
+    document.getElementById('confirmDeleteBtn').addEventListener('click', deleteUser);
 
     function addUser(username) {
         var userCardBody = document.querySelector('.user-card .card-body');
@@ -171,7 +190,7 @@ document.addEventListener('DOMContentLoaded', function () {
         deleteButton.innerHTML = '<i class="bi bi-trash"></i>';
 
         deleteButton.addEventListener('click', function () {
-            userCardBody.removeChild(userItem);
+            showDeleteToast(userItem);
         });
 
         userItem.appendChild(userContent);
