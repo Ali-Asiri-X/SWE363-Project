@@ -5,16 +5,17 @@ body {
 }
 
 .sidebar {
-    min-width: 250px;
+    min-width: auto;
     max-width: 250px;
     height: 100vh;
     position: fixed;
-    top: 56px; /* Height of navbar */
+    top: 56px;
+    /* Height of navbar */
     left: 0;
     background-color: #cae6db;
     color: #171212;
     padding-top: 20px;
-    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
 }
 
 .small-sidebar {
@@ -82,11 +83,14 @@ body {
 
 /* Custom CSS for Badges */
 .badge.bg-outline-success {
-    color: #4caf50; /* Bootstrap's success color */
-    border: 1px solid #4caf50; /* Border with success color */
-    background-color: transparent; /* Transparent background */
+    color: #4caf50;
+    /* Bootstrap's success color */
+    border: 1px solid #4caf50;
+    /* Border with success color */
+    background-color: transparent;
+    /* Transparent background */
 }
 
-#toastConfirmation{
+#toastNotification {
     z-index: 5
 }
