@@ -30,8 +30,8 @@ The CSS framework used is Bootstrap.
 
 
 ## Contribution
-    1) Ali Asiri worked on (student-homepage.html, student-homepage-team.html) 
+    1) Ali Asiri worked on (student-homepage.html, student-homepage-team.html) and all related CSS and Javascript to these pages.
     2) Ziyad Alsufyani worked on (admin-homepage.html, admin-view-teams.html, student-team-proposals.html) and all related CSS and Javascript to these pages.
-    3) 
-    4)
-    5)
+    3) JAWAD ALSHABIB worked on (TeamFormationPage.html, parts of student from a team page.html) and the corresponding CSS files.
+    4) MOHAMMED HABKARIE worked on (moderator homepage.html, admin page.html, parts of student from a team page.html) and the corresponding CSS files.
+    5) OSAMA HAKAMI worked on (loginPage.html, createAccountPage.html) and all related CSS and Javascript to these pages.
