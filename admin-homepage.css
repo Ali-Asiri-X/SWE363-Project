@@ -91,7 +91,15 @@ body {
 .user-card {
     max-height: 500px;
     width: 100%;
-    overflow-y: auto; /* Enable vertical scrolling */
+    overflow-y: auto;
+}
+
+/* Mobile-specific styles */
+@media (max-width: 768px) {
+    .user-card {
+        max-height: 300px; /* Set the desired height for mobile view */
+        overflow-y: auto; /* Enable vertical scrolling */
+    }
 }
 
 .user-item {
