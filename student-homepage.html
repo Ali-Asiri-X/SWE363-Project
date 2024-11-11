@@ -7,6 +7,8 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
   <!-- Custom CSS -->
   <link href="homeStyles.css" rel="stylesheet">
 </head>
@@ -63,13 +65,16 @@
 
   <!-- Main Content -->
   <main class="px-md-4 content">
-    <div class="d-flex align-items-center mb-4">
-      <img src="account_circle.svg" class="rounded-circle me-3" alt="Profile Picture">
-      <div id="userInfo">
-        <h2 class="mb-1"><strong>John Doe</strong></h2>
-        <p class="mb-1">WhatsApp: +1234567890</p>
+    <div class="d-flex align-items-center mb-4 position-relative">
+      <img src="account_circle.svg" id="profilePic" class="rounded-circle me-3 img-100" alt="Profile Picture">
+      <button class="btn btn-success btn-sm position-absolute" id="editProfilePicture" data-bs-toggle="modal" data-bs-target="#editProfilePicModal" aria-label="Edit profile picture">
+        <i class="bi bi-pencil"></i>
+      </button>
+      <div id="userInfo" style="padding: 20px;">
+        <h2 class="mb-1"><strong>Ali Ahmed</strong></h2>
+        <p class="mb-1">WhatsApp: +966567890123</p>
         <p class="mb-1">Major: Computer Science</p>
-        <p class="mb-0">A brief description about John Doe. He is a dedicated student with a passion for software development and teamwork.</p>
+        <p class="mb-0">A dedicated student with a passion for software development and teamwork.</p>
       </div>
     </div>
 
@@ -94,11 +99,11 @@
           <form id="editProfileForm">
             <div class="mb-3">
               <label for="profileName" class="form-label">Name</label>
-              <input type="text" class="form-control" id="profileName" value="John Doe">
+              <input type="text" class="form-control" id="profileName" value="Ali AlAli">
             </div>
             <div class="mb-3">
               <label for="profileWhatsApp" class="form-label">WhatsApp</label>
-              <input type="text" class="form-control" id="profileWhatsApp" value="+1234567890">
+              <input type="text" class="form-control" id="profileWhatsApp" value="+966567890123">
             </div>
             <div class="mb-3">
               <label for="profileMajor" class="form-label">Major</label>
@@ -106,9 +111,31 @@
             </div>
             <div class="mb-3">
               <label for="profileDescription" class="form-label">Description</label>
-              <textarea class="form-control" id="profileDescription" rows="3">A brief description about John Doe. He is a dedicated student with a passion for software development and teamwork.</textarea>
+              <textarea class="form-control" id="profileDescription" rows="3">A dedicated student with a passion for software development and teamwork.</textarea>
             </div>
-            <button type="submit" class="btn btn-success">Save changes</button>
+            <button type="submit" class="btn btn-primary">Save changes</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Profile Picture Modal -->
+  <div class="modal fade" id="editProfilePicModal" tabindex="-1" aria-labelledby="editProfilePicModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editProfilePicModalLabel">Edit Profile Picture</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="editProfilePicForm" novalidate>
+            <div class="form-group mb-3">
+              <label for="newProfileImage">Select New Profile Image</label>
+              <input type="file" class="form-control" id="newProfileImage" accept="image/*" required>
+              <div class="invalid-feedback">Please upload a profile image.</div>
+            </div>
+            <button type="submit" class="btn btn-primary">Save changes</button>
           </form>
         </div>
       </div>

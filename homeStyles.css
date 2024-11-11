@@ -52,3 +52,13 @@ body {
     background-color: #a5c69b; 
     cursor: pointer; /* Change cursor to pointer on hover */
 }
+.img-100 {
+    width: 100px;
+    height: 100px;
+    
+}
+
+#editProfilePicture {
+    transform: translate(250%, -120%);
+    border-radius: 15px;
+}
