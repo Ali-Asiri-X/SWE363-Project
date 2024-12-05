@@ -1,48 +1,3 @@
-// Placeholder data for teams
-const teams = [
-    {
-        name: "Team Alpha",
-        description: "A team focused on alpha projects",
-        majors: ["CS", "EE", "ME", "CE", "BA"]
-    },
-    {
-        name: "Team Beta",
-        description: "A team focused on beta projects",
-        majors: ["CS", "BA", "PH", "CH", "BI"]
-    },
-    {
-        name: "Team Beta",
-        description: "A team focused on beta projects",
-        majors: ["CS", "BA", "PH", "CH", "BI"]
-    },
-    {
-        name: "Team Beta",
-        description: "A team focused on beta projects",
-        majors: ["CS", "BA", "PH", "CH", "BI"]
-    },
-    {
-        name: "Team Beta",
-        description: "A team focused on beta projects",
-        majors: ["CS", "BA", "PH", "CH", "BI"]
-    },
-    {
-        name: "Team Beta",
-        description: "A team focused on beta projects",
-        majors: ["CS", "BA", "PH", "CH", "BI"]
-    },
-    {
-        name: "Team Beta",
-        description: "A team focused on beta projects",
-        majors: ["CS", "BA", "PH", "CH", "BI"]
-    },
-    {
-        name: "Team Beta",
-        description: "A team focused on beta projects",
-        majors: ["CS", "BA", "PH", "CH", "BI"]
-    }
-    // Add more teams as needed
-];
-
 let currentTeamIndex = null;
 
 // Function to create a card
@@ -98,8 +53,18 @@ function deleteTeam() {
     }
 }
 
+// Function to fetch teams from the server
+function fetchTeams() {
+    fetch('http://localhost:3000/team/all')
+        .then(response => response.json())
+        .then(data => {
+            renderCards(data);
+        })
+        .catch(error => console.error('Error fetching teams:', error));
+}
+
 // Add event listener to the confirm delete button
 document.getElementById('confirmDeleteBtn').addEventListener('click', deleteTeam);
 
 // Render cards on page load
-document.addEventListener('DOMContentLoaded', () => renderCards(teams));
+document.addEventListener('DOMContentLoaded', () => fetchTeams());
