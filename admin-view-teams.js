@@ -1,4 +1,6 @@
 let currentTeamIndex = null;
+let currentTeamId = null;
+let teams = [];
 
 // Function to create a card
 function createCard(team, index) {
@@ -6,7 +8,7 @@ function createCard(team, index) {
     card.className = 'col-md-6 mb-4';
 
     const cardContent = `
-        <div class="card  shadow">
+        <div class="card shadow">
             <div class="card-body">
                 <h5 class="card-title">${team.teamName}</h5>
                 <p class="card-text">${team.description}</p>
@@ -17,7 +19,7 @@ function createCard(team, index) {
                         </div>
                     `).join('')}
                 </div>
-                <button class="btn btn-danger w-100" onclick="showDeleteToast(${index})">Delete</button>
+                <button class="btn btn-danger w-100" onclick="showDeleteToast(${index}, '${team._id}')">Delete</button>
             </div>
         </div>
     `;
@@ -27,37 +29,57 @@ function createCard(team, index) {
 }
 
 // Function to render all cards
-function renderCards(teams) {
+function renderCards(teamsData) {
     const cardContainer = document.getElementById('cardContainer');
     cardContainer.innerHTML = ''; // Clear existing content
+    teams = teamsData; // Update the global teams array
     teams.forEach((team, index) => {
         cardContainer.appendChild(createCard(team, index));
     });
 }
 
 // Function to show the delete confirmation Toast
-function showDeleteToast(index) {
+function showDeleteToast(index, id) {
     currentTeamIndex = index;
+    currentTeamId = id;
     const toast = new bootstrap.Toast(document.getElementById('deleteToast'));
     toast.show();
 }
 
 // Function to delete the team
 function deleteTeam() {
-    if (currentTeamIndex !== null) {
-        teams.splice(currentTeamIndex, 1);
-        renderCards(teams);
-        currentTeamIndex = null;
-        const toast = bootstrap.Toast.getInstance(document.getElementById('deleteToast'));
-        toast.hide();
+    if (currentTeamIndex !== null && currentTeamId !== null) {
+        fetch(`http://localhost:3000/team/delete/${currentTeamId}`, {
+            method: 'DELETE'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message === "Team deleted successfully") {
+                teams.splice(currentTeamIndex, 1);
+                renderCards(teams);
+                currentTeamIndex = null;
+                currentTeamId = null;
+                const toast = bootstrap.Toast.getInstance(document.getElementById('deleteToast'));
+                toast.hide();
+            } else {
+                console.error('Error deleting team:', data.message);
+            }
+        })
+        .catch(error => console.error('Error deleting team:', error));
     }
 }
 
 // Function to fetch teams from the server
 function fetchTeams() {
+    // Show placeholder cards while loading
+    const placeholders = document.querySelectorAll('.placeholder-card');
+    placeholders.forEach(card => card.style.display = 'block');
+    
     fetch('http://localhost:3000/team/all')
         .then(response => response.json())
         .then(data => {
+            // Hide placeholder cards after data is loaded
+            placeholders.forEach(card => card.style.display = 'none');
             renderCards(data);
         })
         .catch(error => console.error('Error fetching teams:', error));
@@ -66,5 +88,5 @@ function fetchTeams() {
 // Add event listener to the confirm delete button
 document.getElementById('confirmDeleteBtn').addEventListener('click', deleteTeam);
 
-// Render cards on page load
-document.addEventListener('DOMContentLoaded', () => fetchTeams);
+// Fetch and render cards on page load
+document.addEventListener('DOMContentLoaded', fetchTeams);
