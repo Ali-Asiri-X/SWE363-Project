@@ -8,7 +8,7 @@ function createCard(team, index) {
     const cardContent = `
         <div class="card  shadow">
             <div class="card-body">
-                <h5 class="card-title">${team.name}</h5>
+                <h5 class="card-title">${team.teamName}</h5>
                 <p class="card-text">${team.description}</p>
                 <div class="d-flex mb-3">
                     ${team.majors.map(major => `
@@ -67,4 +67,4 @@ function fetchTeams() {
 document.getElementById('confirmDeleteBtn').addEventListener('click', deleteTeam);
 
 // Render cards on page load
-document.addEventListener('DOMContentLoaded', () => fetchTeams());
+document.addEventListener('DOMContentLoaded', () => fetchTeams);
