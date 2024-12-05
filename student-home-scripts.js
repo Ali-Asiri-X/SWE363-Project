@@ -3,6 +3,19 @@ document.addEventListener('DOMContentLoaded', function() {
     const editProfileModal = new bootstrap.Modal(editProfileModalElement);
 
     document.getElementById('editProfileBtn').addEventListener('click', function() {
+        // Extract current profile information from the HTML
+        const userInfo = document.getElementById('userInfo').children;
+        const name = userInfo[0].firstChild.textContent;
+        const whatsNum = userInfo[1].textContent.replace('WhatsApp: ', '');
+        const major = userInfo[2].textContent.replace('Major: ', '');
+        const profileDescription = userInfo[3].textContent;
+
+        // Populate the modal fields with the current profile information
+        document.getElementById('profileName').value = name;
+        document.getElementById('profileWhatsApp').value = whatsNum;
+        document.getElementById('profileMajor').value = major;
+        document.getElementById('profileDescription').value = profileDescription;
+
         editProfileModal.show();
     });
 
@@ -14,8 +27,8 @@ document.addEventListener('DOMContentLoaded', function() {
         let profileDescription = document.getElementById('profileDescription').value;
         let userInfo = document.getElementById('userInfo').children;
         userInfo[0].firstChild.textContent = name;
-        userInfo[1].textContent = whatsNum;
-        userInfo[2].textContent = major;
+        userInfo[1].textContent = 'WhatsApp: ' + whatsNum;
+        userInfo[2].textContent = 'Major: ' + major;
         userInfo[3].textContent = profileDescription;
         editProfileModal.hide();
     });
