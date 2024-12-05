@@ -4,7 +4,7 @@ const cors = require("cors"); // Import the cors package
 
 const teamRoutes = require("./routes/team"); // Get List Routes
 
-mongoose.connect("mongodb+srv://ziyad:Zzz@1234@testcluster.cpids.mongodb.net/team-formation-database"); // Initialize connection to the DB
+mongoose.connect("mongodb+srv://ziyad:Zzz%401234@testcluster.cpids.mongodb.net/team-formation-database"); // Initialize connection to the DB
 const database = mongoose.connection; // Connect to the database
 
 // Listen for errors
