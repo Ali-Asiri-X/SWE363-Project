@@ -39,4 +39,18 @@ router.get("/all", async (req, res) => {
   }
 });
 
+// Route to handle deleting a team
+router.delete("/delete/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const deletedTeam = await TeamModal.findByIdAndDelete(id);
+    if (!deletedTeam) {
+      return res.status(404).json({ message: "Team not found" });
+    }
+    res.status(200).json({ message: "Team deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 module.exports = router;
