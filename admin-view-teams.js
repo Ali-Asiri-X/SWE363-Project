@@ -82,7 +82,14 @@ function fetchTeams() {
             placeholders.forEach(card => card.style.display = 'none');
             renderCards(data);
         })
-        .catch(error => console.error('Error fetching teams:', error));
+        .catch(error => {
+            console.error('Error fetching teams:', error);
+            // Show error message to user
+            const cardContainer = document.getElementById('cardContainer');
+            cardContainer.innerHTML = '<div class="alert alert-danger">Error loading teams. Please try again later.</div>';
+            // Hide placeholder cards on error
+            placeholders.forEach(card => card.style.display = 'none');
+        });
 }
 
 // Add event listener to the confirm delete button

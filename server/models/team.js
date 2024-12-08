@@ -80,5 +80,10 @@ teamSchema.methods.rejectRequest = async function(studentId) {
   await this.removeRequest(studentId);
 };
 
+// Method to check request status
+teamSchema.methods.checkRequestStatus = function(studentId) {
+  return this.pendingRequests.some(id => id.equals(studentId));
+};
+
 const Team = mongoose.model("Team", teamSchema);
 module.exports = Team;
