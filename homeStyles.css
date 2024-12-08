@@ -32,21 +32,18 @@ body {
     .sidebar {
         display: none;
     }
-    .content {
-        width: 100%; /* Full width when sidebar is hidden */
-        left: 0;
-    }
 }
 .content {
     margin-top: 56px; /* Height of navbar */
     padding: 20px;
-    width: calc(100% - 250px); /* Account for sidebar width */
-    overflow-x: hidden;
+
 }
 @media (min-width: 992px) {
     .content {
         margin-left: 250px; /* Match sidebar width */
         position: relative;
+        width: calc(100% - 250px); /* Account for sidebar width */
+        overflow-x: hidden;
     }
 }
 

@@ -1,87 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
-    <link rel="stylesheet" href="loginStylePage.css">
+    <title>Login Page</title> 
+    <link rel="stylesheet" href="loginStylePage.css"> 
     <link rel="stylesheet" href="mobileLogin.css">
 </head>
-
 <body>
     <!-- Container for the login page -->
-    <div class="page">
+<div class="page">
 
-        <div class="login-page">
-            <h1 style="margin-bottom: 50px;">SWE & ICS Team</h1>
-            <img src="KFUPMtower.png" alt="KFUPM Tower" class="tower-image">
+    <div class="login-page">
+        <h1 style="margin-bottom: 50px;">SWE & ICS Team</h1>
+        <img src="KFUPMtower.png" alt="KFUPM Tower" class="tower-image">
+    </div>
+
+    <div class="login-page">
+        <!-- Container for the login logo -->
+        <div class="login-logo">
+            <img src="logo.png" alt="KFUPM Logo" class="logo-image">
         </div>
-
-        <div class="login-page">
-            <!-- Container for the login logo -->
-            <div class="login-logo">
-                <img src="logo.png" alt="KFUPM Logo" class="logo-image">
-            </div>
-            <!-- Container for the login form -->
-            <div class="login-form">
-                <!-- Form for login -->
-                <form class="form" action="/login" method="post"> <!-- Form action and method -->
-                    <!-- Group for username input -->
-                    <div class="input-container">
-                        <input id="username" name="username" placeholder="Enter Username" class="input-field"
-                            type="text" required aria-label="Username">
-                        <label for="input-field" class="input-label">Enter Username</label>
-                        <span class="input-highlight"></span>
-                    </div>
-                    <!-- Group for password input -->
-                    <div class="input-container">
-                        <input id="password" name="password" placeholder="Enter Password" class="input-field"
-                            type="password" required aria-label="Password">
-                        <label for="input-field" class="input-label">Enter Password</label>
-                        <span class="input-highlight"></span>
-                    </div>
-                    <!-- Group for submit button -->
-                    <div class="input-container">
-                        <button type="submit" class="button" aria-label="Log in">
-                            <span>Log</span><span>In</span>
-                        </button>
-                    </div>
-                    <!-- Group for create account button -->
-                    <section class="create-account">
-                        <a href="createaccountpage.html" aria-label="Create Account" class="button"
-                            style="background-color: lightgray;">
-                            <span>Create</span><span>Account</span>
-                        </a>
-                    </section>
-                </form>
-            </div>
+        <!-- Container for the login form -->
+        <div class="login-form">
+            <!-- Form for login -->
+            <form class="form" action="http://localhost:3000/api/auth/login" method="post"> <!-- Form action and method -->
+                 <!-- Group for username input -->
+                 <div class="input-container">
+                    <input id="username" name="username" placeholder="Enter Username" class="input-field" type="text" required aria-label="Username">
+                    <label for="input-field" class="input-label">Enter Username</label>
+                    <span class="input-highlight"></span>
+                </div>
+                <!-- Group for password input -->
+                <div class="input-container">
+                  <input id="password" name="password" placeholder="Enter Password" class="input-field" type="password" required aria-label="Password">
+                  <label for="input-field" class="input-label">Enter Password</label>
+                  <span class="input-highlight"></span>
+                </div>
+                <!-- Group for submit button -->
+                <div class="input-container">
+                    <button type="submit" class="button" aria-label="Log in">
+                        <span>Log</span><span>In</span>
+                    </button>
+                </div>
+                <!-- Group for create account button -->
+                <section class="create-account">
+                    <a href="createaccountpage.html" aria-label="Create Account" class="button" style="background-color: lightgray;">
+                        <span>Create</span><span>Account</span>
+                    </a>
+                </section>
+            </form>
         </div>
     </div>
-</body>
+</div>
 <script>
-    document.querySelector('.form').addEventListener('submit', function (event) {
-        // Get form inputs
-        const username = document.getElementById('username').value.trim().toLowerCase();
-        const password = document.getElementById('password').value.trim().toLowerCase();
-
-        // Check if both fields are "admin"
-        if (username === 'admin' && password === 'admin') {
-            // Redirect to admin homepage
-            window.location.href = 'admin-homepage.html';
-            event.preventDefault(); // Prevent form submission
-        } else if (username === 'moderator' && password === 'moderator') {
-            // Redirect to moderator homepage
-            window.location.href = 'moderator homepage.html';
-            event.preventDefault(); // Prevent form submission
-        } else if (username === 'student' && password === 'student') {
-            // Redirect to student homepage
-            window.location.href = "student-homepage.html"
-            event.preventDefault(); // Prevent form submission
-        } else {
-            // other validations or form submission
+    document.querySelector('.form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+    
+        const formData = new FormData(this);
+        const data = Object.fromEntries(formData);
+    
+        // Special cases for admin and moderator
+        if (data.username === 'admin' && data.password === 'admin') {
+            window.location.href = '/admin-homepage.html';
+            return;
+        } else if (data.username === 'moderator' && data.password === 'moderator') {
+            window.location.href = '/moderator homepage.html';
+            return;
+        }
+    
+        try {
+            // Send data to the backend
+            const response = await fetch('http://localhost:3000/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+            });
+    
+            const result = await response.json();
+    
+            if (response.ok) {
+                alert('Login successful!');
+                // Redirect to student Homepage
+                window.location.href = '/student-homepage';
+            } else {
+                alert('Error: ${result.message}');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred. Please try again later.');
         }
     });
-</script>
-
+    </script>
+</body>
 </html>
