@@ -62,10 +62,12 @@ body {
     }
 }
 
+/* Modify content class */
 .content {
     margin-top: 56px;
-    /* Height of navbar */
     padding: 20px;
+    width: 100%;
+    transition: margin-left 0.3s ease;
 }
 
 /* For smaller screens, ensure the content takes full width */
@@ -75,18 +77,40 @@ body {
     }
 }
 
+/* Update the media queries */
 @media (min-width: 992px) {
     .content {
         position: relative;
         margin-left: 250px;
         display: inline-block;
+        width: calc(100% - 250px);
+        padding: 20px 30px; /* Increase padding */
     }
 }
 
+/* Update card container */
 .card-container {
     display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
+    flex-wrap: wrap;
+    gap: 20px;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* Update card styles */
+.card-container .col-md-6 {
+    flex: 0 1 calc(50% - 10px); /* Reduce gap consideration */
+    min-width: 300px;
+    max-width: calc(50% - 10px);
+}
+
+/* For mobile screens */
+@media (max-width: 768px) {
+    .card-container .col-md-6 {
+        flex: 0 1 100%;
+        max-width: 100%;
+    }
 }
 
 /* Custom CSS for Badges */
@@ -100,5 +124,17 @@ body {
 }
 
 #toastNotification {
-    z-index: 5
+    z-index: 5;
+}
+
+/* Remove default padding from container-fluid */
+.container-fluid {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/* Update the row class */
+.row {
+    margin-right: 0;
+    margin-left: 0;
 }

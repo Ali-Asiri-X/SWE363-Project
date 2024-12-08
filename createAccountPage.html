@@ -24,7 +24,7 @@
     <!-- Container for the create account page -->
 <div class="create-account-page">
     <!-- back button -->
-    <a href="javascript:history.back()" class="back-button"> <!-- Changed from button to a tag -->
+    <a href="loginPage.html" class="back-button"> <!-- Changed from button to a tag -->
         <div class="back-button-box">
           <span class="back-button-elem">
             <svg viewBox="0 0 46 40" xmlns="http://www.w3.org/2000/svg">
@@ -47,7 +47,7 @@
         <!-- Container for the account creation form -->
         <div class="create-account-form">
             <!-- Form for creating an account -->
-            <form class="form" action="/create-account" method="post"> <!-- Form action and method -->
+            <form class="form" action="http://localhost:3000/api/auth/create-account" method="post"> <!-- Form action and method -->
                  <!-- Group for name input -->
                  <div class="input-container">
                     <input id="new-name" name="name" placeholder="Enter Name" class="input-field" type="text" required aria-label="Name">
@@ -97,7 +97,32 @@
             </form>
     </div>
 </div>
+<script>
+  document.getElementById('createAccountForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
 
+    const formData = new FormData(this);
+    const data = Object.fromEntries(formData);
+
+    try {
+        const response = await fetch('http://localhost:3000/api/auth/create-account', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+            alert('Account created successfully!');
+        } else {
+            alert('Error: ${result.message}');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred. Please try again later.');
+    }
+});
+</script>
 </body>
 <script src="formValidation.js"></script>
 </html>
