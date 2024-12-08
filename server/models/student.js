@@ -40,10 +40,10 @@ const studentSchema = new mongoose.Schema({
     required: [true, "Password is required"],
     minlength: 8
   },
-  profilePicture: {
-    type: String,
-    default: "account_circle.svg"
-  },
+  // profilePicture: {
+  //   type: String,
+  //   default: "account_circle.svg"
+  // },
   teamId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Team',
