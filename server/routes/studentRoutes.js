@@ -152,6 +152,7 @@ router.delete("/team/:teamId/leave/:studentId", async (req, res) => {
       await Team.findByIdAndDelete(req.params.teamId);
     }
     
+    
     res.json({ message: "Left team successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
