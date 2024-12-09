@@ -1,16 +1,17 @@
 /* Custom CSS for Admin Home Page */
 
+/* Base styles */
 body {
     overflow-x: hidden;
 }
 
+/* Sidebar styling */
 .sidebar {
-    min-width: auto;
-    max-width: 230px;
+    min-width: 250px;
+    max-width: 250px;
     height: 100vh;
     position: fixed;
     top: 56px;
-    /* Height of navbar */
     left: 0;
     background-color: #cae6db;
     color: #171212;
@@ -19,12 +20,11 @@ body {
 }
 
 .small-sidebar {
-    min-width: auto;
-    max-width: 230px;
+    min-width: 250px;
+    max-width: 250px;
     height: 100vh;
     position: fixed;
     top: 56px;
-    /* Height of navbar */
     left: 0;
     background-color: #cae6db;
     color: #171212;
@@ -32,6 +32,7 @@ body {
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
 }
 
+/* Navigation links */
 .sidebar .nav-link,
 .offcanvas-body .nav-item {
     color: #171a1d;
@@ -54,40 +55,88 @@ body {
     /* Increased border-radius */
 }
 
+/* Content area */
+.content {
+    margin-top: 56px;
+    padding: 20px;
+    width: 100%;
+    transition: margin-left 0.3s ease;
+}
+
+/* Responsive layouts */
 @media (max-width: 992px) {
 
     /* Hide the sidebar by default on smaller screens */
     .sidebar {
         display: none;
     }
-}
-
-.content {
-    margin-top: 57px;
-    /* Height of navbar */
-    padding: 20px;
-}
-
-/* For smaller screens, ensure the content takes full width */
-@media (max-width: 992px) {
+    
     .content {
         margin-left: 0;
     }
 }
 
-.card-container {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
+@media (min-width: 992px) {
+    .content {
+        position: relative;
+        margin-left: 250px;
+        display: inline-block;
+        width: calc(100% - 250px);
+        padding: 20px 30px;
+    }
 }
 
-/* Custom CSS for Badges */
+/* Card container and cards */
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.card {
+    transition: transform 0.2s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-container .col-md-6 {
+    flex: 0 1 calc(50% - 10px);
+    min-width: 300px;
+    max-width: calc(50% - 10px);
+}
+
+@media (max-width: 768px) {
+    .card-container .col-md-6 {
+        flex: 0 1 100%;
+        max-width: 100%;
+    }
+}
+
+/* Utility classes */
 .badge.bg-outline-success {
     color: #4caf50; /* Bootstrap's success color */
     border: 1px solid #4caf50; /* Border with success color */
     background-color: transparent; /* Transparent background */
 }
 
+/* Layout containers */
+.container-fluid {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.row {
+    margin-right: 0;
+    margin-left: 0;
+}
+
+/* Toast notification */
 #toastConfirmation{
     z-index: 5
 }

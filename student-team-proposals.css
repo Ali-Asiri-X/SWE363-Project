@@ -98,6 +98,16 @@ body {
     padding: 0;
 }
 
+/* Card styles */
+.card {
+    transition: transform 0.2s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
 /* Update card styles */
 .card-container .col-md-6 {
     flex: 0 1 calc(50% - 10px); /* Reduce gap consideration */

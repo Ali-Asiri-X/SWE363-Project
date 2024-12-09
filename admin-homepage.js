@@ -141,6 +141,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const sampleUsers = [
         { username: 'User1', imgSrc: 'https://via.placeholder.com/40' },
         { username: 'User2', imgSrc: 'https://via.placeholder.com/40' },
+        { username: 'User1', imgSrc: 'https://via.placeholder.com/40' },
+        { username: 'User2', imgSrc: 'https://via.placeholder.com/40' },
+        { username: 'User1', imgSrc: 'https://via.placeholder.com/40' },
+        { username: 'User2', imgSrc: 'https://via.placeholder.com/40' },
+        { username: 'User1', imgSrc: 'https://via.placeholder.com/40' },
+        { username: 'User2', imgSrc: 'https://via.placeholder.com/40' },
     ];
     function loadSampleUsers() {
         sampleUsers.forEach(user => addUser(user.username, user.imgSrc));
