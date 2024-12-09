@@ -41,6 +41,7 @@ app.use(express.json()); // Parse incoming request bodies in JSON format
 
 app.use("/team", teamRoutes); // Connect to team route
 app.use("/student", studentRoutes); // Connect to team route
+app.use("/auth", authRoutes); // Connect to auth route
 app.listen(3000, () => {
   console.log(`Server Started at ${3000}`);
 });

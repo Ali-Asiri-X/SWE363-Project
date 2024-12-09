@@ -1,13 +1,13 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async function () {
+    // Get form elements
     var addUserForm = document.getElementById('addUserForm');
     var usernameInput = document.getElementById('username');
     var passwordInput = document.getElementById('password');
-    var profileImageInput = document.getElementById('profileImage');
-    var profileImagePreview = document.getElementById('profileImagePreview');
-    var addUserForm = document.getElementById('addUserForm');
-    var newProfileImageInput = document.getElementById('newProfileImage');
     var profilePic = document.getElementById('profilePic');
     var editProfileForm = document.getElementById('editProfileForm');
+
+    // Remove duplicate declaration of addUserForm
+    // Remove references to removed elements (profileImageInput, profileImagePreview)
 
     var passwordHelp = document.createElement('div');
     passwordHelp.className = 'invalid-feedback';
@@ -38,74 +38,93 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    profileImageInput.addEventListener('change', function () {
-        const file = profileImageInput.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                profileImagePreview.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
-    });
-
-    editProfileForm.addEventListener('submit', function (e) {
-        e.preventDefault();
-        if (!editProfileForm.checkValidity()) {
-            e.stopPropagation();
-        } else {
-            const file = newProfileImageInput.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    profilePic.src = e.target.result;
-                    profilePic.style.width = '100px';
-                    profilePic.style.height = '100px';
-                };
-                reader.readAsDataURL(file);
+    // Check if elements exist before adding event listeners
+    if (editProfileForm) {
+        editProfileForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            if (!editProfileForm.checkValidity()) {
+                e.stopPropagation();
+            } else {
+                const file = newProfileImageInput.files[0];
+                if (file && profilePic) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        profilePic.src = e.target.result;
+                        profilePic.style.width = '100px';
+                        profilePic.style.height = '100px';
+                    };
+                    reader.readAsDataURL(file);
+                }
+                // Hide the modal
+                const editProfileModal = bootstrap.Modal.getInstance(document.getElementById('editProfileModal'));
+                if (editProfileModal) {
+                    editProfileModal.hide();
+                }
             }
-            // Hide the modal
-            const editProfileModal = bootstrap.Modal.getInstance(document.getElementById('editProfileModal'));
-            editProfileModal.hide();
-        }
-        editProfileForm.classList.add('was-validated');
-    });
+            editProfileForm.classList.add('was-validated');
+        });
+    }
 
-    addUserForm.addEventListener('submit', function (event) {
+    addUserForm.addEventListener('submit', async function (event) {
         event.preventDefault();
         event.stopPropagation();
 
         // Validate username
         if (usernameInput.value.trim() === '') {
             usernameInput.classList.add('is-invalid');
-        } else {
-            usernameInput.classList.remove('is-invalid');
-            usernameInput.classList.add('is-valid');
+            return;
         }
 
         // Validate password
-        var passwordValid = validatePassword(passwordInput.value.trim());
+        const passwordValid = validatePassword(passwordInput.value.trim());
         if (!passwordValid.isValid) {
             passwordInput.classList.add('is-invalid');
             passwordHelp.innerHTML = passwordValid.message.join('<br>');
-        } else {
-            passwordInput.classList.remove('is-invalid');
-            passwordInput.classList.add('is-valid');
+            return;
         }
 
-        if (addUserForm.checkValidity() === false || !passwordValid.isValid) {
-            addUserForm.classList.add('was-validated');
-        } else {
-            addUser(usernameInput.value.trim());
-            // Clear the input fields
-            usernameInput.value = '';
-            passwordInput.value = '';
-            profileImageInput.value = null;
-            profileImagePreview.src = "https://via.placeholder.com/40"
-            usernameInput.classList.remove('is-valid');
-            passwordInput.classList.remove('is-valid');
-            addUserForm.classList.remove('was-validated');
+        if (addUserForm.checkValidity() && passwordValid.isValid) {
+            try {
+                const moderatorData = {
+                    username: usernameInput.value.trim(),
+                    password: passwordInput.value.trim()
+                };
+
+                const response = await fetch('http://localhost:3000/auth/create-moderator', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(moderatorData)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Add user to UI
+                    addUser(moderatorData.username);
+                    
+                    // Reset form
+                    usernameInput.value = '';
+                    passwordInput.value = '';
+                    
+                    // Reset validation states
+                    usernameInput.classList.remove('is-valid');
+                    passwordInput.classList.remove('is-valid');
+                    addUserForm.classList.remove('was-validated');
+
+                    // Show success message
+                    alert('Moderator created successfully');
+                } else {
+                    throw new Error(data.message || 'Failed to create moderator');
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert(error.message);
+            }
         }
+        addUserForm.classList.add('was-validated');
     }, false);
 
     function validatePassword(password) {
@@ -138,22 +157,6 @@ document.addEventListener('DOMContentLoaded', function () {
         };
     }
 
-    const sampleUsers = [
-        { username: 'User1', imgSrc: 'https://via.placeholder.com/40' },
-        { username: 'User2', imgSrc: 'https://via.placeholder.com/40' },
-        { username: 'User1', imgSrc: 'https://via.placeholder.com/40' },
-        { username: 'User2', imgSrc: 'https://via.placeholder.com/40' },
-        { username: 'User1', imgSrc: 'https://via.placeholder.com/40' },
-        { username: 'User2', imgSrc: 'https://via.placeholder.com/40' },
-        { username: 'User1', imgSrc: 'https://via.placeholder.com/40' },
-        { username: 'User2', imgSrc: 'https://via.placeholder.com/40' },
-    ];
-    function loadSampleUsers() {
-        sampleUsers.forEach(user => addUser(user.username, user.imgSrc));
-    }
-
-    loadSampleUsers();
-
     function showDeleteToast(item) {
         currentDeleteItem = item;
         const toast = new bootstrap.Toast(document.getElementById('deleteToast'));
@@ -171,6 +174,40 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('confirmDeleteBtn').addEventListener('click', deleteUser);
 
+    async function fetchModerators() {
+        try {
+            // Show loading placeholder
+            showLoadingPlaceholder();
+            
+            const response = await fetch('http://localhost:3000/auth/moderators');
+            if (!response.ok) {
+                throw new Error('Failed to fetch moderators');
+            }
+            const moderators = await response.json();
+            
+            // Clear existing moderators
+            const userCardBody = document.querySelector('.user-card .card-body');
+            userCardBody.innerHTML = '';
+            
+            // Add each moderator to the UI
+            moderators.forEach(moderator => {
+                addUser(moderator.username);
+            });
+
+            // If no moderators, show message
+            if (moderators.length === 0) {
+                userCardBody.innerHTML = '<p class="text-muted text-center mt-3">No moderators found</p>';
+            }
+        } catch (error) {
+            console.error('Error fetching moderators:', error);
+            const userCardBody = document.querySelector('.user-card .card-body');
+            userCardBody.innerHTML = '<p class="text-danger text-center mt-3">Failed to load moderators</p>';
+        }
+    }
+
+    // Call fetchModerators when page loads
+    fetchModerators();
+
     function addUser(username) {
         var userCardBody = document.querySelector('.user-card .card-body');
 
@@ -181,9 +218,11 @@ document.addEventListener('DOMContentLoaded', function () {
         userContent.className = 'd-flex align-items-center';
 
         var userImage = document.createElement('img');
-        userImage.src = profileImagePreview.src;
+        userImage.src = 'person.svg'; // Use person.svg for all moderators
         userImage.alt = username;
-        userImage.className = 'me-3';
+        userImage.className = 'rounded-circle me-3';
+        userImage.style.width = '40px';
+        userImage.style.height = '40px';
 
         var userNameSpan = document.createElement('span');
         userNameSpan.textContent = username;
@@ -205,3 +244,31 @@ document.addEventListener('DOMContentLoaded', function () {
         userCardBody.appendChild(userItem);
     }
 });
+
+// Add this function at the top level
+function convertImageToBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+    });
+}
+
+// Add this function to admin-homepage.js
+function showLoadingPlaceholder() {
+    const userCardBody = document.querySelector('.user-card .card-body');
+    userCardBody.innerHTML = `
+        <div class="placeholder-glow">
+            ${Array(5).fill(`
+                <div class="user-item">
+                    <div class="d-flex align-items-center" style="width: 100%;">
+                        <div class="placeholder rounded-circle me-3" style="width: 40px; height: 40px;"></div>
+                        <div class="placeholder col-4"></div>
+                    </div>
+                    <div class="placeholder col-2"></div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+}

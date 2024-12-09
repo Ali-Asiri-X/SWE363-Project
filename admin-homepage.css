@@ -88,8 +88,7 @@ body {
     flex-wrap: wrap;
     gap: 20px;
     width: 100%;
-    margin: 0;
-    padding: 0;
+    margin-top: 100px;
 }
 
 .card {
@@ -99,6 +98,7 @@ body {
 
 /* User specific styles */
 .user-card {
+    height: 350px;
     min-width: 300px;
     max-height: 500px;
     overflow-y: auto;
@@ -149,4 +149,20 @@ body {
 /* Toast notification */
 #toastConfirmation {
     z-index: 5;
+}
+
+/* Add these styles to admin-homepage.css */
+.add-user .card-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.add-user form {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.add-user .btn-success {
+    margin-top: auto;
 }

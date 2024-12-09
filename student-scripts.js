@@ -2,7 +2,7 @@
 
 // Constants
 const API_BASE_URL = 'http://localhost:3000';
-const STUDENT_ID = '6753aeb9b9bfb1fba734ecd6'; // Temporary hardcoded ID
+const STUDENT_ID = '67576704d7bf6788e678d1bc'; // Temporary hardcoded ID
 
 document.addEventListener('DOMContentLoaded', async function () {
     let hasTeam = false;

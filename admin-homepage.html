@@ -75,7 +75,7 @@
             <main class="col-lg-10 ms-sm-auto px-md-4 content">
                 <h1>Admin Dashboard</h1>
                 <div class="d-flex align-items-center mb-4 position-relative">
-                    <img src="https://via.placeholder.com/100" id="profilePic" class="rounded-circle me-3 img-100"
+                    <img src="person.svg" id="profilePic" class="rounded-circle me-3 img-100"
                         alt="Profile Picture">
                     <button class="btn btn-success btn-sm position-absolute" id="editProfilePicture"
                         data-bs-toggle="modal" data-bs-target="#editProfileModal" aria-label="Edit profile picture ">
@@ -136,15 +136,6 @@
                                     <label for="password">Password</label>
                                     <input type="password" class="form-control" id="password"
                                         placeholder="Enter password" required>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label for="profileImage">Profile Image</label>
-                                    <input type="file" class="form-control" id="profileImage" accept="image/*" required>
-                                    <div class="invalid-feedback">Please upload a profile image.</div>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <img id="profileImagePreview" src="https://via.placeholder.com/40"
-                                        class="rounded-circle" alt="Profile Preview" width="40" height="40">
                                 </div>
                                 <button type="submit" class="btn btn-success w-100">Add</button>
                             </form>
