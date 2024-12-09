@@ -48,6 +48,20 @@ function fetchTeams() {
         .then(response => response.json())
         .then(data => {
             placeholders.forEach(card => card.style.display = 'none');
+            const cardContainer = document.getElementById('cardContainer');
+            
+            if (!data || data.length === 0) {
+                cardContainer.innerHTML = `
+                    <div class="col-12 text-center mt-5">
+                        <div class="alert alert-info p-4" role="alert">
+                            <i class="bi bi-info-circle fs-3 mb-3 d-block"></i>
+                            <h4 class="alert-heading">No Teams Available</h4>
+                            <p class="mb-0">There are currently no team proposals to join. Check back later!</p>
+                        </div>
+                    </div>`;
+                return;
+            }
+            
             renderCards(data);
         })
         .catch(error => {

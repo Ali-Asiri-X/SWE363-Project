@@ -71,23 +71,34 @@ function deleteTeam() {
 
 // Function to fetch teams from the server
 function fetchTeams() {
-    // Show placeholder cards while loading
     const placeholders = document.querySelectorAll('.placeholder-card');
     placeholders.forEach(card => card.style.display = 'block');
     
     fetch('http://localhost:3000/team/all')
         .then(response => response.json())
         .then(data => {
-            // Hide placeholder cards after data is loaded
             placeholders.forEach(card => card.style.display = 'none');
-            renderCards(data);
+            teams = data;
+            const cardContainer = document.getElementById('cardContainer');
+            
+            if (!data || data.length === 0) {
+                cardContainer.innerHTML = `
+                    <div class="col-12 text-center mt-5">
+                        <div class="alert alert-info p-4" role="alert">
+                            <i class="bi bi-info-circle fs-3 mb-3 d-block"></i>
+                            <h4 class="alert-heading">No Teams Available</h4>
+                            <p class="mb-0">There are currently no teams created. Teams will appear here once they are formed.</p>
+                        </div>
+                    </div>`;
+                return;
+            }
+            
+            renderCards(teams);
         })
         .catch(error => {
-            console.error('Error fetching teams:', error);
-            // Show error message to user
+            console.error('Error:', error);
             const cardContainer = document.getElementById('cardContainer');
-            cardContainer.innerHTML = '<div class="alert alert-danger">Error loading teams. Please try again later.</div>';
-            // Hide placeholder cards on error
+            cardContainer.innerHTML = '<div class="alert alert-danger">Failed to load teams. Please try again later.</div>';
             placeholders.forEach(card => card.style.display = 'none');
         });
 }
