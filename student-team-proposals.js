@@ -40,7 +40,7 @@ function renderCards(teamsData) {
 
 // Function to fetch teams from the server
 function fetchTeams() {
-    const studentId = '67576704d7bf6788e678d1bc'; // Replace with actual student ID
+    const studentId = '6755e375d5460275e3f3862c'; // Replace with actual student ID
     const placeholders = document.querySelectorAll('.placeholder-card');
     placeholders.forEach(card => card.style.display = 'block');
     
@@ -80,7 +80,7 @@ function requestToJoin(teamId, teamName) {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            studentId: '67576704d7bf6788e678d1bc' // Replace with actual student ID
+            studentId: '6755e375d5460275e3f3862c' // Replace with actual student ID
         })
     })
     .then(response => response.json())
