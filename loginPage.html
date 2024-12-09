@@ -60,41 +60,35 @@
         const formData = new FormData(this);
         const data = Object.fromEntries(formData);
     
-        const submitButton = this.querySelector('button');
-        submitButton.disabled = true; // Disable the button to prevent multiple submissions
-        submitButton.innerText = 'Logging in...'; // Update button text
-    
         // Special cases for admin and moderator
         if (data.username === 'admin' && data.password === 'admin') {
             window.location.href = '/admin-homepage.html';
             return;
         } else if (data.username === 'moderator' && data.password === 'moderator') {
-            window.location.href = '/moderator-homepage.html';
+            window.location.href = '/moderator homepage.html';
             return;
         }
     
         try {
+            // Send data to the backend
             const response = await fetch('http://localhost:3000/api/auth/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data),
-                credentials: 'include', // Include session cookies
             });
     
             const result = await response.json();
     
             if (response.ok) {
                 alert('Login successful!');
-                window.location.href = '/student-homepage'; // Redirect to student homepage
+                // Redirect to student Homepage
+                window.location.href = '/student-homepage';
             } else {
                 alert('Error: ${result.message}');
             }
         } catch (error) {
             console.error('Error:', error);
             alert('An error occurred. Please try again later.');
-        } finally {
-            submitButton.disabled = false; // Re-enable the button
-            submitButton.innerText = 'Login'; // Reset button text
         }
     });
     </script>

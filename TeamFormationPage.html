@@ -26,7 +26,7 @@
             
         <!-- Page Header --> 
 
-        <form>
+
             <div class="style_Header">
                 
                 <button fdprocessedid="3vosu" class="style_SideBarButton" >
@@ -42,7 +42,7 @@
                     <text class="text_Title"> Team Formation </text>
                 </div>
                 
-                <button type="button" id="Save" class="style_DefaultButton" fdprocessedid="2u7yz7" >Save</button>
+                <button class="style_DefaultButton" fdprocessedid="2u7yz7" onclick="window.location.href='student-homepage-team.html';">Save</button>
             </div>
             
             <!-- Card featuring input fields --> 
@@ -51,9 +51,9 @@
             <div class="style_ContainerVertical">
             <text class="text_Heading">Creat Your Team</text>
               <text class="text_Small">Team Name</text>
-              <input id="name" class="style_InputField" placeholder="Enter team name" fdprocessedid="s3vz33">
+              <input class="style_InputField" placeholder="Enter team name" fdprocessedid="s3vz33">
               <text class="text_Small">Team Description</text>
-              <textarea id="description" class="style_InputBox" style="resize: none;" placeholder="Describe your team" fdprocessedid="jzdeqj">
+              <input class="style_InputBox" placeholder="Describe your team" fdprocessedid="jzdeqj">
                 </div>
               </div>
 
@@ -62,147 +62,47 @@
           <div class="style_MediumCard">
             <div class="style_ContainerVertical">
               <text class="text_Heading">Team Scheme</text>
-              <div class="style_ContainerHorizontal" id="schemeContainer">
+              <div class="style_ContainerHorizontal">
 
                   
-                
+                <div class="style_SmallCard">
+                  <div class="style_Image" style="background-image: 
+                      url(&quot;https://assets.api.uizard.io/api/cdn/stream/5cd610b2-623f-4861-aa55-ba5b4aae1eaa.png&quot;);">
+                      </div>
+                    
+                  <text class="text_Small">Data Science</text>
+                    </div>
                   
-               
+                <div class="style_SmallCard">
+                  <div class="style_Image" style="background-image: 
+                      url(&quot;https://assets.api.uizard.io/api/cdn/stream/5cd610b2-623f-4861-aa55-ba5b4aae1eaa.png&quot;);">
+                      </div>
+                    
+                  <text class="text_Small">Cybersecurity</text>
+                    </div>
+                  
+                <div class="style_SmallCard">
+                  <div class="style_Image" style="background-image: 
+                      url(&quot;https://assets.api.uizard.io/api/cdn/stream/5cd610b2-623f-4861-aa55-ba5b4aae1eaa.png&quot;);">
+                      </div>
 
-              </div>
+                  <text class="text_Small">Web Devlopment</text>
 
-              <button type="button" class="style_WideButton" fdprocessedid="kbo5yw" onclick="window.location.href='student from a team page.html';">Customize New Scheme</button>
+                    </div>
+
+                  </div>
+
+              <button class="style_WideButton" fdprocessedid="kbo5yw" onclick="window.location.href='student from a team page.html';">Customize New Scheme</button>
 
                 </div>
 
               </div>
-            </form>
+
             </div>
 
           </div>
 
     </div>
-
-    <script> //script for fetching schemes and posting a team
-
-  //var/const/let
-  const majorMap = new Map();
-  const majorList = [];
-  let schemes =[];
-
-    //fetch schemes function
-
-    async function fetchSchemes(){ 
-
-      fetch('http://localhost:3000/schemes/all')///////////change url once proper scheme model is added
-        .then(response => response.json())
-        .then(data => {
-            handleSchemes(data); //function that handles schemes
-        })
-        .catch(error => {
-            console.error('Error fetching schemes:', error); //error message 
-            });
-      
-    }
-
-    function handleSchemes(schemesData){
-
-      schemes=schemesData;
-      schemes.forEach((scheme, index) => {
-        creatCard(index,scheme.name);//dc name
-        majorMap.set(index+'',scheme.majors); //dc majors name
-    });
-
-
-    }
-
-
-
-
-
-    //creat cards
-
-    function creatCard(index, name) {
-
-      const cardContainer = document.getElementById('schemeContainer');
-
-      const schemeCard = document.createElement('div');
-      schemeCard.className = "style_SmallCard";
-      schemeCard.id = index + ''; //id = index
-      const cardHtml = '<div class="style_Image" style="background-image: url(&quot;https://assets.api.uizard.io/api/cdn/stream/5cd610b2-623f-4861-aa55-ba5b4aae1eaa.png&quot;);"></div><text class="text_Small">' + name + '</text>';
-
-      schemeCard.innerHTML = cardHtml;
-      cardContainer.appendChild(schemeCard);
-
-      document.getElementById(
-        schemeCard.id).addEventListener(
-          'click', () => {copyMajors(majorList, majorMap.get(schemeCard.id)); }); //save majors list so it can be posted when the form is submitted
-
-
-
-
-
-      //Copy majors function for the cards
-      function copyMajors(majorList, otherList) {
-        for (let i = 0; i < otherList.length; i++) {
-          majorList[i] = otherList[i];
-        }
-
-      }
-
-    } 
-
-    // post function
-    async function postTeam(){
-
-      //get values
-
-      let name = document.getElementById('name').value.trim();
-      let description = document.getElementById('description').value.trim();
-    // majors is selected above
-
-
-      try {
-        const response = await fetch('http://localhost:3000/team/add', {//dc url
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ //dc these below
-              'teamName':name,
-              'description':description,
-              'majors': majorList //add majors list here
-            })
-        });
-
-        const res = await response.json();
-        
-        if (response.ok) {
-            alert('Team created successfully');
-            window.location.href = 'student-homepage.html';//dc that this is the proper page to return to
-        } else {
-            alert(res.error || 'An error occurred while creating a team');
-        }
-    } catch (error) {
-        alert('An error occurred while connecting to the server. Please try again.');
-        console.error('Error:', error);
-    }
-
-
-    }
-
-
-    //event handlers
-
-    document.addEventListener('DOMContentLoaded', fetchSchemes);
-    document.getElementById("Save").addEventListener('click',async function(event){
-      event.preventDefault();
-      postTeam();
-      
-    });
-
-
-
-
-  </script>
   
 
     <span id="PING_IFRAME_FORM_DETECTION" style="display: none;"></span>
