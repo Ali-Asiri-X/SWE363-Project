@@ -56,33 +56,36 @@
 <script>
     document.querySelector('.form').addEventListener('submit', async function (e) {
         e.preventDefault();
-    
+
         const formData = new FormData(this);
         const data = Object.fromEntries(formData);
-    
-        // Special cases for admin and moderator
-        if (data.username === 'admin' && data.password === 'admin') {
-            window.location.href = '/admin-homepage.html';
-            return;
-        } else if (data.username === 'moderator' && data.password === 'moderator') {
-            window.location.href = '/moderator homepage.html';
-            return;
-        }
-    
+
         try {
-            // Send data to the backend
-            const response = await fetch('http://localhost:3000/api/auth/login', {
+            // Send login data to the backend
+            const response = await fetch('http://localhost:3000/auth/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data),
             });
-    
+
             const result = await response.json();
-    
+
             if (response.ok) {
                 alert('Login successful!');
-                // Redirect to student Homepage
-                window.location.href = '/student-homepage';
+
+                // Save the token in localStorage
+                localStorage.setItem('token', result.token);
+
+                // Redirect based on user role
+                if (result.role === 'moderator') {
+                    window.location.href = '/moderator-homepage.html';
+                } else if (result.role === 'student') {
+                    window.location.href = '/student-homepage.html';
+                } else if (result.role === 'admin') {
+                    window.location.href = '/admin-homepage.html';
+                } else {
+                    alert('Unknown role. Contact support.');
+                }
             } else {
                 alert('Error: ${result.message}');
             }
@@ -91,6 +94,6 @@
             alert('An error occurred. Please try again later.');
         }
     });
-    </script>
+</script>
 </body>
 </html>
