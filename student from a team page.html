@@ -27,62 +27,62 @@
                 
                 <label>
                     <span style="color: #030303; font-family: 'Roboto'; font-size: 16px;">Scheme Name:</span>
-                    <input type="text" placeholder="Enter scheme name" class="input" />
+                    <input id='name' type="text" placeholder="Enter scheme name" class="input" />
                 </label>
 
                 
                 <label>
                     <span style="color: #030303; font-family: 'Roboto'; font-size: 16px;">Member 1 University Major:</span>
-                    <select class="dropdown">
-                        <option>Select major</option>
-                        <option>Computer Science</option>
-                        <option>Engineering</option>
-                        <option>Business</option>
-                        <option>Law</option>
+                    <select id="first" class="dropdown">
+                        <option value="">Select major</option>
+                        <option value="ICS">Computer Science</option>
+                        <option value="EE">Electrical Engineering</option>
+                        <option value="BUS">Business</option>
+                        <option value="SWE">Software Engineering</option>
                     </select>
                 </label>
                 
                 <label>
                     <span style="color: #030303; font-family: 'Roboto'; font-size: 16px;">Member 2 University Major:</span>
-                    <select class="dropdown">
-                        <option>Select major</option>
-                        <option>Computer Science</option>
-                        <option>Engineering</option>
-                        <option>Business</option>
-                        <option>Law</option>
+                    <select id="second" class="dropdown">
+                        <option value="">Select major</option>
+                        <option value="ICS">Computer Science</option>
+                        <option value="EE">Electrical Engineering</option>
+                        <option value="BUS">Business</option>
+                        <option value="SWE">Software Engineering</option>
                     </select>
                 </label>
 
                 <label>
                     <span style="color: #030303; font-family: 'Roboto'; font-size: 16px;">Member 3 University Major:</span>
-                    <select class="dropdown">
-                        <option>Select major</option>
-                        <option>Computer Science</option>
-                        <option>Engineering</option>
-                        <option>Business</option>
-                        <option>Law</option>
+                    <select id="third" class="dropdown">
+                        <option value="">Select major</option>
+                        <option value="ICS">Computer Science</option>
+                        <option value="EE">Electrical Engineering</option>
+                        <option value="BUS">Business</option>
+                        <option value="SWE">Software Engineering</option>
                     </select>
                 </label>
                 
                 <label>
                     <span style="color: #030303; font-family: 'Roboto'; font-size: 16px;">Member 4 University Major:</span>
-                    <select class="dropdown">
-                        <option>Select major</option>
-                        <option>Computer Science</option>
-                        <option>Engineering</option>
-                        <option>Business</option>
-                        <option>Law</option>
+                    <select id="fourth" class="dropdown">
+                        <option value="">Select major</option>
+                        <option value="ICS">Computer Science</option>
+                        <option value="EE">Electrical Engineering</option>
+                        <option value="BUS">Business</option>
+                        <option value="SWE">Software Engineering</option>
                     </select>
                 </label>
 
                 <label>
                     <span style="color: #030303; font-family: 'Roboto'; font-size: 16px;">Member 5 University Major:</span>
-                    <select class="dropdown">
-                        <option>Select major</option>
-                        <option>Computer Science</option>
-                        <option>Engineering</option>
-                        <option>Business</option>
-                        <option>Law</option>
+                    <select id="fifth" class="dropdown">
+                        <option value="">Select major</option>
+                        <option value="ICS">Computer Science</option>
+                        <option value="EE">Electrical Engineering</option>
+                        <option value="BUS">Business</option>
+                        <option value="SWE">Software Engineering</option>
                     </select>
                 </label>
 
@@ -90,7 +90,7 @@
                 
                 <div class="button-group">
                     <button type="button" class="button add-theme-button" id="displayAddThemeButton" onclick="displayAddTheme()">Add a Theme</button>
-                    <button type="submit" class="button create-scheme-button" onclick="window.location.href = 'TeamFormationPage.html'; return false;">Create the Team Scheme</button>
+                    <button id= "creat"type="button" class="button create-scheme-button" >Create the Team Scheme</button>
                 </div>
                 
                 <!-- popup script-->
@@ -129,9 +129,65 @@
 
 
                 </script>
+
+
 <!--End of popup script-->
                 
             </form>
+
+            <script>
+                document.getElementById(
+                'creat').addEventListener(
+                'click', () => {
+
+                const majors=[];
+                majors.push(document.getElementById('first').value);
+                majors.push(document.getElementById('second').value);
+                majors.push(document.getElementById('third').value);
+                majors.push(document.getElementById('fourth').value);
+                majors.push(document.getElementById('fifth').value);
+                postScheme(majors,document.getElementById('name').value.trim());
+                
+
+
+
+                });
+
+                async function postScheme(majors,name){
+
+
+                    try {
+                    const response = await fetch('http://localhost:3000/teamScheme/add', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ 
+                            'schemeName':name,
+                            'description':"...",
+                            'majors': majors 
+                        })
+                    });
+
+                    const res = await response.json();
+                    
+                    if (response.ok) {
+                        alert('Scheme created successfully');
+                        window.location.href = 'TeamFormation.html';
+                    } else {
+                        alert(res.error || 'An error occurred while creating a scheme');
+                    }
+                    } catch (error) {
+                    alert('An error occurred while connecting to the server. Please try again.');
+                    console.error('Error:', error);
+                    }
+
+
+                }
+                
+
+
+
+
+            </script>
         </section>
     </main>
 
