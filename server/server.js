@@ -1,47 +1,40 @@
 const express = require("express"); // Define Express
 const mongoose = require("mongoose"); // Define Mongoose
 const cors = require("cors"); // Import the cors package
-const session = require("express-session"); // Add session support
-const teamRoutes = require("./routes/team"); // Get List Routes
-const studentRoutes = require("./routes/studentRoutes"); // Get List Routes
-const authRoutes = require("./routes/authRoutes"); // Add auth routes
+const teamRoutes = require("./routes/team"); // Team Routes
+const studentRoutes = require("./routes/studentRoutes"); // Student Routes
+const authRoutes = require("./routes/authRoutes"); // Authentication Routes
 
-mongoose.connect("mongodb+srv://ziyad:Zzz%401234@testcluster.cpids.mongodb.net/team-formation-database"); // Initialize connection to the DB
-const database = mongoose.connection; // Connect to the database
-
-// Listen for errors
-database.on("error", (error) => {
-  console.log(error);
+// Connect to MongoDB
+mongoose.connect("mongodb+srv://ziyad:Zzz%401234@testcluster.cpids.mongodb.net/team-formation-database", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
 });
+const database = mongoose.connection;
 
-// Listen for successful connection
-database.once("connected", () => {
-  console.log("Database Connected");
-});
+// Handle connection errors
+database.on("error", (error) => console.log(error));
+
+// Confirm successful connection
+database.once("connected", () => console.log("Database Connected"));
 
 // Initialize Express
-const app = express(); // An instance of the express js application
+const app = express(); // An instance of the express application
 
-// Temporarily enable CORS for all origins
+// Enable CORS for all origins
 app.use(cors());
 
-// Configure session middleware
-app.use(
-  session({
-    secret: "your_secret_key", // Replace with a secure key
-    resave: false,             // Prevent resaving unchanged sessions
-    saveUninitialized: false,  // Don't save uninitialized sessions
-    cookie: {                  // Configure session cookie settings
-      maxAge: 1000 * 60 * 30, // 30 Minutes
-    },
-  })
-);
+// Parse incoming JSON requests
+app.use(express.json());
 
-app.use(express.json()); // Parse incoming request bodies in JSON format
+// Connect routes
+app.use("/team", teamRoutes); // Team routes
+app.use("/student", studentRoutes); // Student routes
+app.use("/auth", authRoutes); // Authentication routes
+app.use("/scheme", teamSchemes); // Scheme routes
 
-app.use("/team", teamRoutes); // Connect to team route
-app.use("/student", studentRoutes); // Connect to team route
-app.use("/auth", authRoutes); // Connect to auth route
-app.listen(3000, () => {
-  console.log(`Server Started at ${3000}`);
+// Start the server
+const PORT = 3000;
+app.listen(PORT, () => {
+  console.log('Server Started at ${3000}');
 });
