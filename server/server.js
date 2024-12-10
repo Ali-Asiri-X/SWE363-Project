@@ -4,11 +4,9 @@ const cors = require("cors"); // Import the cors package
 const teamRoutes = require("./routes/team"); // Team Routes
 const studentRoutes = require("./routes/studentRoutes"); // Student Routes
 const authRoutes = require("./routes/authRoutes"); // Authentication Routes
-
+// const teamSchemes = require("./routes/teamSchemes"); // Scheme Routes
 // Connect to MongoDB
 mongoose.connect("mongodb+srv://ziyad:Zzz%401234@testcluster.cpids.mongodb.net/team-formation-database", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
 });
 const database = mongoose.connection;
 
@@ -31,7 +29,7 @@ app.use(express.json());
 app.use("/team", teamRoutes); // Team routes
 app.use("/student", studentRoutes); // Student routes
 app.use("/auth", authRoutes); // Authentication routes
-app.use("/scheme", teamSchemes); // Scheme routes
+// app.use("/scheme", teamSchemes); // Scheme routes
 
 // Start the server
 const PORT = 3000;

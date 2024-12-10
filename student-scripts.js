@@ -200,50 +200,56 @@ function createMemberCard(member) {
     const div = document.createElement('div');
     div.className = 'd-flex align-items-center mb-3';
     div.innerHTML = `
-            <img src="${'person.svg'}" class="rounded-circle me-3" alt="Member Picture">
-            <div class="details">
-                <h5 class="mb-1">${member.name}</h5>
-                <p class="mb-1">Major: ${member.major}</p>
-            </div>
-            <div class="ms-auto d-flex flex-wrap gap-2">
-                <a href="https://wa.me/${member.whatsappNumber}" target="_blank">
-                    <button class="btn btn-outline-success btn-sm btn-md-normal me-2">
-                        <i class="fab fa-whatsapp"></i>
-                    </button>
-                </a>
-                <button class="btn btn-outline-danger btn-sm btn-md-normal delete-member" 
-                    onclick="deleteMember('${member._id}', '${member.name}', this)">
-                    <i class="fas fa-trash"></i>
+        <img src="person.svg" class="rounded-circle me-3" alt="Member Picture">
+        <div class="details" onclick="showStudentInfo(this, '${member.description}')">
+            <h5 class="mb-1">${member.name}</h5>
+            <p class="mb-1">Major: ${member.major}</p>
+        </div>
+        <div class="ms-auto d-flex flex-wrap gap-2">
+            <a href="https://wa.me/${member.whatsappNumber}" target="_blank">
+                <button class="btn btn-outline-success btn-sm btn-md-normal me-2">
+                    <i class="fab fa-whatsapp"></i>
                 </button>
-            </div>
-        `;
+            </a>
+            <button class="btn btn-outline-danger btn-sm btn-md-normal delete-member" 
+                onclick="deleteMember('${member._id}', '${member.name}')">
+                <i class="fas fa-trash"></i>
+            </button>
+        </div>
+    `;
     return div;
 }
 
 function createRequestCard(request) {
+    // Format WhatsApp number
+    const formattedNumber = request.whatsappNumber.replace(/\D/g, '');
+    
     const div = document.createElement('div');
     div.className = 'd-flex align-items-center mb-3';
     div.innerHTML = `
-            <img src="${'person.svg'}" class="rounded-circle me-3" alt="Member Picture">
-            <div class="details">
-                <h5 class="mb-1">${request.name}</h5>
-                <p class="mb-1">Major: ${request.major}</p>
-            </div>
-            <div class="ms-auto d-flex flex-wrap gap-2">
-                <button class="btn btn-outline-success btn-sm btn-md-normal me-md-2" 
-                    onclick="acceptRequest('${request._id}', '${request.name}',this)">
-                    <i class="fas fa-check"></i>
+        <img src="person.svg" class="rounded-circle me-3" alt="Member Picture">
+        <div class="details" onclick="showStudentInfo(this, ${JSON.stringify(request.description)})">
+            <h5 class="mb-1">${request.name}</h5>
+            <p class="mb-1">Major: ${request.major}</p>
+        </div>
+        <div class="ms-auto d-flex flex-wrap gap-2">
+            <a href="https://wa.me/${formattedNumber}" target="_blank">
+                <button class="btn btn-outline-success btn-sm btn-md-normal me-2">
+                    <i class="fab fa-whatsapp"></i>
                 </button>
-                <button class="btn btn-outline-danger btn-sm btn-md-normal" 
-                    onclick="deleteRequest('${request._id}', '${request.name}',this)">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </div>
-        `;
+            </a>
+            <button class="btn btn-outline-success btn-sm btn-md-normal me-md-2" 
+                onclick="acceptRequest('${request._id}', '${request.name}')">
+                <i class="fas fa-check"></i>
+            </button>
+            <button class="btn btn-outline-danger btn-sm btn-md-normal" 
+                onclick="deleteRequest('${request._id}', '${request.name}')">
+                <i class="fas fa-trash"></i>
+            </button>
+        </div>
+    `;
     return div;
 }
-
-
 
 function handleProfilePicSubmit(event) {
     event.preventDefault();
@@ -445,4 +451,20 @@ async function deleteRequest(requestId, requestName,element) {
         console.error('Error rejecting request:', error);
         alert('Failed to reject request');
     }
+}
+
+// Initialize modal
+const infoModal = new bootstrap.Modal(document.getElementById('infoModal'));
+
+// Add click handlers for student cards
+function showStudentInfo(detailsElement, description) {
+    const name = detailsElement.querySelector('h5').textContent;
+    const major = detailsElement.querySelector('p').textContent.replace('Major: ', '');
+    
+    // Update modal content
+    document.getElementById('infoModalLabel').textContent = name;
+    document.querySelector('#infoModal .student-description').textContent = 
+        description;
+        
+    infoModal.show();
 }

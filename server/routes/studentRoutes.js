@@ -83,8 +83,8 @@ router.get("/team/:studentId", async (req, res) => {
     }
     
     const team = await Team.findById(student.teamId)
-      .populate('members', 'name major whatsappNumber')
-      .populate('pendingRequests', 'name major ');
+      .populate('members', 'name major whatsappNumber description')
+      .populate('pendingRequests', 'name major description');
       
     res.json({
       hasTeam: true,
