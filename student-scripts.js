@@ -112,42 +112,42 @@ document.getElementById('editProfilePicture').addEventListener('click', function
 });
 
 // Create team button handler
-document.querySelector('#createTeamBtn').addEventListener('click', async function () {
-    try {
-        const response = await fetch(`${API_BASE_URL}/student/team/create`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                teamName: "New Team", // Default name
-                description: "Team description",
-                majors: ["Computer Science"], // Default major
-                studentId: STUDENT_ID,
-                members: [STUDENT_ID],
-                pendingRequests: []
-            })
-        });
+// document.querySelector('#createTeamBtn').addEventListener('click', async function () {
+//     try {
+//         const response = await fetch(`${API_BASE_URL}/student/team/create`, {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//             },
+//             body: JSON.stringify({
+//                 teamName: "New Team", // Default name
+//                 description: "Team description",
+//                 majors: ["Computer Science"], // Default major
+//                 studentId: STUDENT_ID,
+//                 members: [STUDENT_ID],
+//                 pendingRequests: []
+//             })
+//         });
 
-        if (!response.ok) {
-            throw new Error('Failed to create team');
-        }
+//         if (!response.ok) {
+//             throw new Error('Failed to create team');
+//         }
 
-        const data = await response.json();
-        console.log('Team created:', data);
+//         const data = await response.json();
+//         console.log('Team created:', data);
 
-        // Update UI state
-        hasTeam = true;
-        updateUIState();
+//         // Update UI state
+//         hasTeam = true;
+//         updateUIState();
 
-        // Redirect to team formation page
-        // window.location.href = 'TeamFormationPage.html';
+//         // Redirect to team formation page
+//         // window.location.href = 'TeamFormationPage.html';
 
-    } catch (error) {
-        console.error('Error creating team:', error);
-        alert('Failed to create team. Please try again.');
-    }
-});
+//     } catch (error) {
+//         console.error('Error creating team:', error);
+//         alert('Failed to create team. Please try again.');
+//     }
+// });
 
 // Form submissions
 document.getElementById('editProfileForm').addEventListener('submit', handleProfileSubmit);
@@ -468,3 +468,63 @@ function showStudentInfo(detailsElement, description) {
         
     infoModal.show();
 }
+
+// Initialize modal
+const createTeamModal = new bootstrap.Modal(document.getElementById('createTeamModal'));
+
+// Show modal when create team button clicked
+document.getElementById('createTeamBtn').addEventListener('click', () => {
+    createTeamModal.show();
+});
+
+// Handle form submission
+document.getElementById('createTeamForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const submitBtn = form.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+
+    try {
+        // Get all majors
+        const majors = [];
+        for(let i = 1; i <= 6; i++) {
+            const major = document.getElementById(`major${i}`).value;
+            if(!major) {
+                throw new Error(`Please select Major ${i}`);
+            }
+            majors.push(major);
+        }
+
+        const teamData = {
+            teamName: document.getElementById('teamName').value.trim(),
+            description: document.getElementById('teamDescription').value.trim(),
+            majors: majors,
+            studentId: STUDENT_ID,
+            members: [STUDENT_ID]
+        };
+
+        const response = await fetch(`${API_BASE_URL}/student/team/create`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(teamData)
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to create team');
+        }
+
+        const data = await response.json();
+        hasTeam = true;
+        teamId = data._id;
+        updateUIState();
+        createTeamModal.hide();
+        alert('Team created successfully!');
+
+    } catch (error) {
+        alert(error.message || 'Failed to create team');
+    } finally {
+        submitBtn.disabled = false;
+    }
+});

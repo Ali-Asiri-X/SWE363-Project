@@ -182,6 +182,104 @@
         </div>
       </div>
     </div>
+
+    <!-- Create Team Modal -->
+    <div class="modal fade" id="createTeamModal" tabindex="-1" aria-labelledby="createTeamModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="createTeamModalLabel">Create New Team</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="createTeamForm">
+              <div class="mb-3">
+                <label for="teamName" class="form-label">Team Name</label>
+                <input type="text" class="form-control" id="teamName" required>
+              </div>
+              <div class="mb-3">
+                <label for="teamDescription" class="form-label">Description</label>
+                <textarea class="form-control" id="teamDescription" rows="3" required></textarea>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Team Members Majors</label>
+                <div class="row gy-2">
+                  <div class="col-md-6">
+                    <select id="major1" class="form-select" required>
+                      <option value="">Select Major 1</option>
+                      <option value="CS">Computer Science</option>
+                      <option value="SWE">Software Engineering</option>
+                      <option value="IT">Information Technology</option>
+                      <option value="IS">Information Systems</option>
+                      <option value="COE">Computer Engineering</option>
+                      <option value="EE">Electrical Engineering</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <select id="major2" class="form-select" required>
+                      <option value="">Select Major 2</option>
+                      <option value="CS">Computer Science</option>
+                      <option value="SWE">Software Engineering</option>
+                      <option value="IT">Information Technology</option>
+                      <option value="IS">Information Systems</option>
+                      <option value="COE">Computer Engineering</option>
+                      <option value="EE">Electrical Engineering</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <select id="major3" class="form-select" required>
+                      <option value="">Select Major 3</option>
+                      <option value="CS">Computer Science</option>
+                      <option value="SWE">Software Engineering</option>
+                      <option value="IT">Information Technology</option>
+                      <option value="IS">Information Systems</option>
+                      <option value="COE">Computer Engineering</option>
+                      <option value="EE">Electrical Engineering</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <select id="major4" class="form-select" required>
+                      <option value="">Select Major 4</option>
+                      <option value="CS">Computer Science</option>
+                      <option value="SWE">Software Engineering</option>
+                      <option value="IT">Information Technology</option>
+                      <option value="IS">Information Systems</option>
+                      <option value="COE">Computer Engineering</option>
+                      <option value="EE">Electrical Engineering</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <select id="major5" class="form-select" required>
+                      <option value="">Select Major 5</option>
+                      <option value="CS">Computer Science</option>
+                      <option value="SWE">Software Engineering</option>
+                      <option value="IT">Information Technology</option>
+                      <option value="IS">Information Systems</option>
+                      <option value="COE">Computer Engineering</option>
+                      <option value="EE">Electrical Engineering</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <select id="major6" class="form-select" required>
+                      <option value="">Select Major 6</option>
+                      <option value="CS">Computer Science</option>
+                      <option value="SWE">Software Engineering</option>
+                      <option value="IT">Information Technology</option>
+                      <option value="IS">Information Systems</option>
+                      <option value="COE">Computer Engineering</option>
+                      <option value="EE">Electrical Engineering</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="text-end">
+                <button type="submit" class="btn btn-primary">Create Team</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   </main>
 
   <!-- Modals -->
