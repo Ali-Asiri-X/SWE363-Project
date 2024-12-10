@@ -31,6 +31,7 @@ app.use(express.json());
 app.use("/team", teamRoutes); // Team routes
 app.use("/student", studentRoutes); // Student routes
 app.use("/auth", authRoutes); // Authentication routes
+app.use("/scheme", teamSchemes); // Scheme routes
 
 // Start the server
 const PORT = 3000;
