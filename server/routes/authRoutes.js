@@ -1,11 +1,15 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken'); // Import JWT
 const User = require('../models/student');
 const Moderator = require('../models/moderator');
 
 const router = express.Router();
 
-// Create Account
+// Secret for signing JWT tokens
+const JWT_SECRET = 'your_secret_key'; // Replace with a secure key
+
+// Create Account for Students
 router.post('/create-account', async (req, res) => {
     const { name, email, whatsappNumber, universityMajor, description, batchYear, password } = req.body;
 
@@ -34,35 +38,36 @@ router.post('/login', async (req, res) => {
     const { username, password } = req.body;
 
     try {
-        // First check if it's a regular user
+        // Check if it's a regular student
         const user = await User.findOne({ email: username });
         if (user) {
             const isMatch = await bcrypt.compare(password, user.password);
             if (!isMatch) return res.status(401).json({ message: 'Invalid credentials' });
 
-            req.session.user = { 
-                id: user._id, 
-                name: user.name, 
-                role: 'student'
-            };
-            return res.status(200).json({ message: 'Login successful', role: 'student' });
+            // Generate JWT for student
+            const token = jwt.sign(
+                { id: user._id, name: user.name, role: 'student' },
+                JWT_SECRET,
+                { expiresIn: '30m' } // Token expires in 30 minutes
+            );
+            return res.status(200).json({ message: 'Login successful', role: 'student', token });
         }
 
-        // If not a regular user, check if it's a moderator
+        // Check if it's a moderator
         const moderator = await Moderator.findOne({ username: username });
         if (moderator) {
             const isMatch = await bcrypt.compare(password, moderator.password);
             if (!isMatch) return res.status(401).json({ message: 'Invalid credentials' });
 
-            req.session.user = {
-                id: moderator._id,
-                name: moderator.username,
-                role: 'moderator'
-            };
-            return res.status(200).json({ message: 'Login successful', role: 'moderator' });
+            // Generate JWT for moderator
+            const token = jwt.sign(
+                { id: moderator._id, name: moderator.username, role: 'moderator' },
+                JWT_SECRET,
+                { expiresIn: '30m' } // Token expires in 30 minutes
+            );
+            return res.status(200).json({ message: 'Login successful', role: 'moderator', token });
         }
 
-        // If neither user nor moderator is found
         return res.status(404).json({ message: 'User not found' });
 
     } catch (error) {
@@ -70,26 +75,21 @@ router.post('/login', async (req, res) => {
     }
 });
 
-// Logout
-router.post('/logout', (req, res) => {
-    req.session.destroy((err) => {
-        if (err) return res.status(500).json({ message: 'Error logging out' });
-        res.status(200).json({ message: 'Logout successful' });
-    });
-});
-
 // Protected Route (Example: Dashboard)
 router.get('/dashboard', (req, res) => {
-    // Check if the session exists
-    if (!req.session.user) {
-        return res.status(401).json({ message: 'Unauthorized. Please log in.' });
-    }
+    const authHeader = req.headers.authorization;
+    if (!authHeader) return res.status(401).json({ message: 'Unauthorized. No token provided.' });
 
-    // Send personalized data
-    res.status(200).json({
-        message: 'Welcome, ${req.session.user.name}!',
-        user: req.session.user,
-    });
+    const token = authHeader.split(' ')[1]; // Extract the token
+    try {
+        const decoded = jwt.verify(token, JWT_SECRET); // Verify the token
+        res.status(200).json({
+            message: 'Welcome, ${decoded.name}!',
+            user: decoded,
+        });
+    } catch (error) {
+        res.status(403).json({ message: 'Invalid or expired token' });
+    }
 });
 
 // Add new endpoint to create moderator
