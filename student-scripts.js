@@ -111,28 +111,6 @@ document.getElementById('editProfilePicture').addEventListener('click', function
     editProfilePicModal.show();
 });
 
-// Team management functionality
-// if (hasTeam) {
-//     // Delete member functionality
-//     document.querySelectorAll('.delete').forEach(function (button) {
-//         button.addEventListener('click', function () {
-//             if (confirm('Are you sure you want to delete?')) {
-//                 this.closest('.d-flex.align-items-center.mb-3').remove();
-//             }
-//         });
-//     });
-
-//     // Accept request functionality
-//     document.querySelectorAll('.accept').forEach(function (button) {
-//         button.addEventListener('click', function () {
-//             const memberCard = this.closest('.d-flex.align-items-center.mb-3');
-//             const memberDetails = memberCard.querySelector('.details').innerHTML;
-//             addTeamMember(memberDetails);
-//             memberCard.remove();
-//         });
-//     });
-// }
-
 // Create team button handler
 document.querySelector('#createTeamBtn').addEventListener('click', async function () {
     try {
@@ -265,63 +243,14 @@ function createRequestCard(request) {
     return div;
 }
 
-// Helper functions
-// async function handleProfileSubmit(event) {
-//     event.preventDefault();
-    
-//     try {
-//         // Get form data
-//         const formData = {
-//             name: document.getElementById('profileName').value,
-//             whatsappNumber: document.getElementById('profileWhatsApp').value,
-//             major: document.getElementById('profileMajor').value,
-//             description: document.getElementById('profileDescription').value
-//         };
 
-//         // Make API call
-//         const response = await fetch(`${API_BASE_URL}/students/profile/${STUDENT_ID}`, {
-//             method: 'PUT',
-//             headers: {
-//                 'Content-Type': 'application/json'
-//             },
-//             body: JSON.stringify(formData)
-//         });
-
-//         if (!response.ok) {
-//             throw new Error('Failed to update profile');
-//         }
-
-//         // Update UI with new data
-//         const userInfo = document.getElementById('userInfo');
-//         userInfo.querySelector('h2 strong').textContent = formData.name;
-//         userInfo.querySelector('p:nth-child(2)').textContent = `WhatsApp: ${formData.whatsappNumber}`;
-//         userInfo.querySelector('p:nth-child(3)').textContent = `Major: ${formData.major}`;
-//         userInfo.querySelector('p:nth-child(4)').textContent = formData.description;
-
-//         // Close modal
-//         editProfileModal.hide();
-        
-//         // Show success message
-//         alert('Profile updated successfully');
-
-//     } catch (error) {
-//         console.error('Error updating profile:', error);
-//         alert('Failed to update profile. Please try again.');
-//     }
-// }
-
-// document.getElementById('editProfileForm').addEventListener('submit', handleProfileSubmit);
 
 function handleProfilePicSubmit(event) {
     event.preventDefault();
     // Profile pic update logic
 }
 
-// function createTeam() {
-//     // Team creation logic
-//     hasTeam = true;
-//     updateUIState();
-// }
+
 
 function deleteTeam() {
     if (confirm('Are you sure you want to delete the team?')) {
