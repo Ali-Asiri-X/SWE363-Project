@@ -106,12 +106,19 @@
     }
 
     function handleSchemes(schemesData){
+    if (!schemesData || schemesData.length === 0) {
+                  alert("No Schemes exist");
+    }else{
 
-      schemes=schemesData;
+        schemes=schemesData;
       schemes.forEach((scheme, index) => {
         creatCard(index,scheme.schemeName);//dc name
         majorMap.set(index+'',scheme.majors); //dc majors name
     });
+                  
+    }
+
+      
 
 
     }
