@@ -64,7 +64,30 @@
               <text class="text_Heading">Team Scheme</text>
               <div class="style_ContainerHorizontal" id="schemeContainer">
 
-                  
+                 <div id="A" class="style_SmallCard">
+                  <div class="style_Image"
+                    style="background-image: 
+                      url(&quot;https://assets.api.uizard.io/api/cdn/stream/5cd610b2-623f-4861-aa55-ba5b4aae1eaa.png&quot;);">
+                  </div>
+                  <text class="text_Small">Data Science</text>
+                </div>
+
+
+                <div id="B" class="style_SmallCard">
+                  <div class="style_Image"
+                    style="background-image: 
+                      url(&quot;https://assets.api.uizard.io/api/cdn/stream/5cd610b2-623f-4861-aa55-ba5b4aae1eaa.png&quot;);">
+                  </div>
+                  <text class="text_Small">Quantum Computing</text>
+                </div>
+
+                <div id="C" class="style_SmallCard">
+                  <div class="style_Image"
+                    style="background-image: 
+                      url(&quot;https://assets.api.uizard.io/api/cdn/stream/5cd610b2-623f-4861-aa55-ba5b4aae1eaa.png&quot;);">
+                  </div>
+                  <text class="text_Small">Cybersecurity</text>
+                </div> 
                 
                   
                
@@ -89,6 +112,16 @@
   const majorMap = new Map();
   const majorList = [];
   let schemes =[];
+
+  majorMap.set('A',["COE","ICS","STAT"]);
+  majorMap.set('B',["COE","EE","ICS"]);
+  majorMap.set('C',["ICS","SWE","COE"]);
+
+  document.getElementById('A').addEventListener('click', () => {copyMajors(majorList, majorMap.get('A')); }); 
+  document.getElementById('B').addEventListener('click', () => {copyMajors(majorList, majorMap.get('B')); }); 
+  document.getElementById('C').addEventListener('click', () => {copyMajors(majorList, majorMap.get('C')); }); 
+
+
 
     //fetch schemes function
 
@@ -149,15 +182,17 @@
 
 
 
-      //Copy majors function for the cards
-      function copyMajors(majorList, otherList) {
+     
+
+    }
+
+    //Copy majors function for the cards
+    function copyMajors(majorList, otherList) {
         for (let i = 0; i < otherList.length; i++) {
           majorList[i] = otherList[i];
         }
 
       }
-
-    } 
 
     // post function
     async function postTeam(){
