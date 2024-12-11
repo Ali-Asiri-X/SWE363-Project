@@ -1,3 +1,16 @@
+// Function to get auth headers
+function getAuthHeaders() {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        window.location.replace('/loginPage.html');
+        return {};
+    }
+    return {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+    };
+}
+
 document.querySelector('.form').addEventListener('submit', async function(event) {
     event.preventDefault();
     
@@ -44,9 +57,7 @@ document.querySelector('.form').addEventListener('submit', async function(event)
     try {
         const response = await fetch("http://localhost:3000/auth/create-account", {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: getAuthHeaders(),
             body: JSON.stringify({
                 name,
                 email,
