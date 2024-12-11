@@ -10,6 +10,23 @@ const router = express.Router();
 // Secret for signing JWT tokens
 const JWT_SECRET = 'your_secret_key'; // Replace with a secure key
 
+// Auth Middleware
+const authMiddleware = (req, res, next) => {
+    try {
+        const token = req.header('Authorization')?.replace('Bearer ', '');
+        
+        if (!token) {
+            return res.status(401).json({ message: 'Access denied. No token provided.' });
+        }
+
+        const decoded = jwt.verify(token, JWT_SECRET);
+        req.user = decoded;
+        next();
+    } catch (error) {
+        res.status(401).json({ message: 'Invalid token' });
+    }
+};
+
 // Create Account for Students
 router.post('/create-account', async (req, res) => {
     const { name, email, whatsappNumber, major, description, batchYear, password } = req.body;
@@ -128,4 +145,15 @@ router.get('/moderators', async (req, res) => {
     }
 });
 
-module.exports = router;
+// Verify token endpoint
+router.get('/verify', authMiddleware, (req, res) => {
+    res.status(200).json({
+        valid: true,
+        user: req.user
+    });
+});
+
+module.exports = { 
+    router,
+    authMiddleware 
+};
