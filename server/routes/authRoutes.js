@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken'); // Import JWT
 const User = require('../models/student');
 const Moderator = require('../models/moderator');
+const Student = require('../models/student');
 
 const router = express.Router();
 
@@ -11,16 +12,16 @@ const JWT_SECRET = 'your_secret_key'; // Replace with a secure key
 
 // Create Account for Students
 router.post('/create-account', async (req, res) => {
-    const { name, email, whatsappNumber, universityMajor, description, batchYear, password } = req.body;
+    const { name, email, whatsappNumber, major, description, batchYear, password } = req.body;
 
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const newUser = new User({
+        const newUser = new Student({
             name,
             email,
             whatsappNumber,
-            universityMajor,
+            major,
             description,
             batchYear,
             password: hashedPassword,

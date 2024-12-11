@@ -5,7 +5,7 @@ document.querySelector('.form').addEventListener('submit', async function(event)
     const name = document.getElementById('new-name').value.trim();
     const email = document.getElementById('new-email').value.trim();
     const whatsappNumber = document.getElementById('whatsapp-number').value.trim();
-    const universityMajor = document.getElementById('university-major').value.trim();
+    const major = document.getElementById('university-major').value.trim();
     const description = document.getElementById('description').value.trim();
     const batchYear = document.getElementById('batch-year').value.trim();
     const password = document.getElementById('new-password').value.trim();
@@ -26,7 +26,7 @@ document.querySelector('.form').addEventListener('submit', async function(event)
     } else if (!whatsappPattern.test(whatsappNumber)) {
         alert('Please enter a valid WhatsApp number.');
         return;
-    } else if (!universityMajor) {
+    } else if (!major) {
         alert('Please enter your university major.');
         return;
     } else if (!description) {
@@ -42,7 +42,7 @@ document.querySelector('.form').addEventListener('submit', async function(event)
 
     // If validation passes, submit to backend
     try {
-        const response = await fetch(this.action, {
+        const response = await fetch("http://localhost:3000/auth/create-account", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -50,10 +50,10 @@ document.querySelector('.form').addEventListener('submit', async function(event)
             body: JSON.stringify({
                 name,
                 email,
-                'whatsapp-number': whatsappNumber,
-                'university-major': universityMajor,
+                whatsappNumber,
+                major,
                 description,
-                'batch-year': batchYear,
+                batchYear,
                 password
             })
         });
