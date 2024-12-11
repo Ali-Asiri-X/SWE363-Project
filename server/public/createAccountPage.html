@@ -47,7 +47,7 @@
         <!-- Container for the account creation form -->
         <div class="create-account-form">
             <!-- Form for creating an account -->
-            <form class="form" action="http://localhost:3000/api/auth/create-account" method="post"> <!-- Form action and method -->
+            <form class="form" id = "createAccountForm"> <!-- Form action and method -->
                  <!-- Group for name input -->
                  <div class="input-container">
                     <input id="new-name" name="name" placeholder="Enter Name" class="input-field" type="text" required aria-label="Name">
@@ -62,13 +62,13 @@
                 </div>
                 <!-- Group for WhatsApp number input -->
                 <div class="input-container">
-                    <input id="whatsapp-number" name="whatsapp-number" placeholder="Enter WhatsApp Number" class="input-field" type="number" pattern="[0-9]*" required aria-label="WhatsApp Number">
+                    <input id="whatsapp-number" name="whatsappNumber" placeholder="Enter WhatsApp Number" class="input-field" type="number" pattern="[0-9]*" required aria-label="WhatsApp Number">
                     <label for="whatsapp-number" class="input-label">Enter WhatsApp Number</label>
                     <span class="input-highlight"></span>
                 </div>
                 <!-- Group for university major input -->
                 <div class="input-container">
-                    <input id="university-major" name="university-major" placeholder="Enter University Major" class="input-field" type="text" required aria-label="University Major">
+                    <input id="university-major" name="major" placeholder="Enter University Major" class="input-field" type="text" required aria-label="University Major">
                     <label for="university-major" class="input-label">Enter University Major</label>
                     <span class="input-highlight"></span>
                 </div>
@@ -80,7 +80,7 @@
                 </div>
                 <!-- Group for batch year input -->
                 <div class="input-container">
-                    <input id="batch-year" name="batch-year" placeholder="Enter Batch Year" class="input-field" type="number" required aria-label="Batch Year">
+                    <input id="batch-year" name="batchYear" placeholder="Enter Batch Year" class="input-field" type="number" required aria-label="Batch Year">
                     <label for="batch-year" class="input-label">Enter Batch Year</label>
                     <span class="input-highlight"></span>
                 </div>
@@ -98,30 +98,30 @@
     </div>
 </div>
 <script>
-  document.getElementById('createAccountForm').addEventListener('submit', async function (e) {
-    e.preventDefault();
+//   document.getElementById('createAccountForm').addEventListener('submit', async function (e) {
+//     e.preventDefault();
 
-    const formData = new FormData(this);
-    const data = Object.fromEntries(formData);
+//     const formData = new FormData(this);
+//     const data = Object.fromEntries(formData);
 
-    try {
-        const response = await fetch('http://localhost:3000/api/auth/create-account', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data),
-        });
+//     try {
+//         const response = await fetch('http://localhost:3000/auth/create-account', {
+//             method: 'POST',
+//             headers: { 'Content-Type': 'application/json' },
+//             body: JSON.stringify(data),
+//         });
 
-        const result = await response.json();
-        if (response.ok) {
-            alert('Account created successfully!');
-        } else {
-            alert('Error: ${result.message}');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        alert('An error occurred. Please try again later.');
-    }
-});
+//         const result = await response.json();
+//         if (response.ok) {
+//             alert('Account created successfully!');
+//         } else {
+//             alert('Error: ${result.message}');
+//         }
+//     } catch (error) {
+//         console.error('Error:', error);
+//         alert('An error occurred. Please try again later.');
+//     }
+// });
 </script>
 </body>
 <script src="formValidation.js"></script>

@@ -1,7 +1,6 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken'); // Import JWT
-const User = require('../models/student');
 const Moderator = require('../models/moderator');
 const Student = require('../models/student');
 
@@ -56,19 +55,41 @@ router.post('/login', async (req, res) => {
     const { username, password } = req.body;
 
     try {
+
+        if (username === 'admin' && password === 'admin') {
+            return res.status(200).json({ 
+                success: true,
+                role: 'admin',
+                redirectUrl: '/admin-view-teams.html'
+            });
+        }
         // Check if it's a regular student
-        const user = await User.findOne({ email: username });
+        const user = await Student.findOne({ email: username });
         if (user) {
             const isMatch = await bcrypt.compare(password, user.password);
             if (!isMatch) return res.status(401).json({ message: 'Invalid credentials' });
-
             // Generate JWT for student
             const token = jwt.sign(
                 { id: user._id, name: user.name, role: 'student' },
                 JWT_SECRET,
-                { expiresIn: '30m' } // Token expires in 30 minutes
+                { expiresIn: '30m' }
             );
-            return res.status(200).json({ message: 'Login successful', role: 'student', token });
+            
+            // Set token in cookie
+            res.cookie('token', token, { 
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'strict'
+            });
+
+            // Send response with token and redirect URL
+            return res.status(200).json({ 
+                success: true,
+                token,
+                role: 'student',
+                user_id: user._id,
+                redirectUrl: '/student-homepage.html'
+            });
         }
 
         // Check if it's a moderator
@@ -77,13 +98,18 @@ router.post('/login', async (req, res) => {
             const isMatch = await bcrypt.compare(password, moderator.password);
             if (!isMatch) return res.status(401).json({ message: 'Invalid credentials' });
 
-            // Generate JWT for moderator
             const token = jwt.sign(
                 { id: moderator._id, name: moderator.username, role: 'moderator' },
                 JWT_SECRET,
-                { expiresIn: '30m' } // Token expires in 30 minutes
+                { expiresIn: '30m' }
             );
-            return res.status(200).json({ message: 'Login successful', role: 'moderator', token });
+            res.cookie('token', token, { httpOnly: true });
+            return res.status(200).json({ 
+                message: 'Login successful', 
+                role: 'moderator', 
+                token,
+                redirectUrl: '/moderator-homepage.html'
+            });
         }
 
         return res.status(404).json({ message: 'User not found' });

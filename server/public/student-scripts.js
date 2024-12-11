@@ -2,12 +2,58 @@
 
 // Constants
 const API_BASE_URL = 'http://localhost:3000';
-const STUDENT_ID = '675766db7ab76f7332acc33e'; // Temporary hardcoded ID
+let STUDENT_ID = ''; // Temporary hardcoded ID
 
-initializeApp();
+//initializeApp();
 
 let hasTeam = false;
 let teamId=null;
+
+// Add auth check and token handling
+document.addEventListener('DOMContentLoaded', async function() {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        window.location.replace('/loginPage.html');
+        return;
+    }
+
+    try {
+        // Verify token on load
+        const verifyResponse = await fetch('http://localhost:3000/auth/verify', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (!verifyResponse.ok) {
+            localStorage.removeItem('token');
+            window.location.replace('/loginPage.html');
+            return;
+        }
+
+        // Initialize app if token is valid
+
+        STUDENT_ID = localStorage.getItem('user_id');
+        await initializeApp();
+    } catch (error) {
+        console.error('Auth error:', error);
+        localStorage.removeItem('token');
+        window.location.replace('/loginPage.html');
+    }
+});
+
+// Add at top of file after constants
+function getAuthHeaders() {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        window.location.replace('/loginPage.html');
+        return {};
+    }
+    return {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+    };
+}
 
 // Fetch initial data
 async function initializeApp() {
@@ -59,11 +105,17 @@ async function handleProfileSubmit(event) {
         // API call
         const response = await fetch(`${API_BASE_URL}/student/profile/${STUDENT_ID}`, {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
+            headers: getAuthHeaders(),
             body: JSON.stringify(formData)
         });
 
-        if (!response.ok) throw new Error('Failed to update profile');
+        if (!response.ok) {
+            if (response.status === 401) {
+                window.location.href = '/loginPage.html';
+                return;
+            }
+            throw new Error('Failed to update profile');
+        }
 
         // Update UI
         updateProfileUI(formData);
@@ -112,42 +164,42 @@ document.getElementById('editProfilePicture').addEventListener('click', function
 });
 
 // Create team button handler
-document.querySelector('#createTeamBtn').addEventListener('click', async function () {
-    try {
-        const response = await fetch(`${API_BASE_URL}/student/team/create`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                teamName: "New Team", // Default name
-                description: "Team description",
-                majors: ["Computer Science"], // Default major
-                studentId: STUDENT_ID,
-                members: [STUDENT_ID],
-                pendingRequests: []
-            })
-        });
+// document.querySelector('#createTeamBtn').addEventListener('click', async function () {
+//     try {
+//         const response = await fetch(`${API_BASE_URL}/student/team/create`, {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//             },
+//             body: JSON.stringify({
+//                 teamName: "New Team", // Default name
+//                 description: "Team description",
+//                 majors: ["Computer Science"], // Default major
+//                 studentId: STUDENT_ID,
+//                 members: [STUDENT_ID],
+//                 pendingRequests: []
+//             })
+//         });
 
-        if (!response.ok) {
-            throw new Error('Failed to create team');
-        }
+//         if (!response.ok) {
+//             throw new Error('Failed to create team');
+//         }
 
-        const data = await response.json();
-        console.log('Team created:', data);
+//         const data = await response.json();
+//         console.log('Team created:', data);
 
-        // Update UI state
-        hasTeam = true;
-        updateUIState();
+//         // Update UI state
+//         hasTeam = true;
+//         updateUIState();
 
-        // Redirect to team formation page
-        // window.location.href = 'TeamFormationPage.html';
+//         // Redirect to team formation page
+//         // window.location.href = 'TeamFormationPage.html';
 
-    } catch (error) {
-        console.error('Error creating team:', error);
-        alert('Failed to create team. Please try again.');
-    }
-});
+//     } catch (error) {
+//         console.error('Error creating team:', error);
+//         alert('Failed to create team. Please try again.');
+//     }
+// });
 
 // Form submissions
 document.getElementById('editProfileForm').addEventListener('submit', handleProfileSubmit);
@@ -155,7 +207,16 @@ document.getElementById('editProfilePicForm').addEventListener('submit', handleP
 
 async function checkTeamStatus() {
     try {
-        const response = await fetch(`${API_BASE_URL}/student/team/${STUDENT_ID}`);
+        const response = await fetch(`${API_BASE_URL}/student/team/${STUDENT_ID}`, {
+            headers: getAuthHeaders()
+        });
+        
+        if (response.status === 401) {
+            localStorage.removeItem('token');
+            window.location.replace('/loginPage.html');
+            return;
+        }
+
         if (!response.ok) {
             throw new Error('Failed to fetch team status');
         }
@@ -172,7 +233,11 @@ async function checkTeamStatus() {
         updateUIState();
 
     } catch (error) {
-        console.error('Error checking team status:', error);
+        console.error('Error:', error);
+        if (error.message.includes('401')) {
+            localStorage.removeItem('token');
+            window.location.replace('/loginPage.html');
+        }
     }
 }
 
@@ -273,9 +338,21 @@ function addTeamMember(memberDetails) {
 }
 
 async function getStudentProfile() {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+        window.location.replace('/loginPage.html');
+        return;
+    }
     try {
-        const response = await fetch(`${API_BASE_URL}/student/profile/${STUDENT_ID}`);
+        const response = await fetch(`${API_BASE_URL}/student/profile/${STUDENT_ID}`, {
+            headers: getAuthHeaders()
+        });
         if (!response.ok) {
+            if (response.status === 401) {
+                window.location.href = '/loginPage.html';
+                return;
+            }
             throw new Error('Failed to fetch profile');
         }
 
@@ -311,39 +388,22 @@ function populateProfileData(profile) {
 
 async function exitTeam() {
     try {
-        // Get team ID from state
-        console.log("reached here");
-        const response = await fetch(`${API_BASE_URL}/student/team/${STUDENT_ID}`);
-        const data = await response.json();
+        const response = await fetch(`${API_BASE_URL}/student/team/${teamId}/leave/${STUDENT_ID}`, {
+            method: 'DELETE',
+            headers: getAuthHeaders()
+        });
 
-        if (!data.hasTeam) {
-            throw new Error('Not in a team');
-        }
-
-        const teamId = data.team._id;
-
-        // Call leave team endpoint
-        const leaveResponse = await fetch(
-            `${API_BASE_URL}/student/team/${teamId}/leave/${STUDENT_ID}`,
-            {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
+        if (!response.ok) {
+            if (response.status === 401) {
+                window.location.href = '/loginPage.html';
+                return;
             }
-        );
-
-        if (!leaveResponse.ok) {
             throw new Error('Failed to leave team');
         }
 
-        // Update UI state
         hasTeam = false;
         updateUIState();
-
-        // Show success message
         alert('Successfully left the team');
-
     } catch (error) {
         console.error('Error leaving team:', error);
         alert('Failed to leave team. Please try again.');
@@ -468,3 +528,63 @@ function showStudentInfo(detailsElement, description) {
         
     infoModal.show();
 }
+
+// Initialize modal
+const createTeamModal = new bootstrap.Modal(document.getElementById('createTeamModal'));
+
+// Show modal when create team button clicked
+document.getElementById('createTeamBtn').addEventListener('click', () => {
+    createTeamModal.show();
+});
+
+// Handle form submission
+document.getElementById('createTeamForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const submitBtn = form.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+
+    try {
+        // Get all majors
+        const majors = [];
+        for(let i = 1; i <= 6; i++) {
+            const major = document.getElementById(`major${i}`).value;
+            if(!major) {
+                throw new Error(`Please select Major ${i}`);
+            }
+            majors.push(major);
+        }
+
+        const teamData = {
+            teamName: document.getElementById('teamName').value.trim(),
+            description: document.getElementById('teamDescription').value.trim(),
+            majors: majors,
+            studentId: STUDENT_ID,
+            members: [STUDENT_ID]
+        };
+
+        const response = await fetch(`${API_BASE_URL}/student/team/create`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(teamData)
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to create team');
+        }
+
+        const data = await response.json();
+        hasTeam = true;
+        teamId = data._id;
+        updateUIState();
+        createTeamModal.hide();
+        alert('Team created successfully!');
+
+    } catch (error) {
+        alert(error.message || 'Failed to create team');
+    } finally {
+        submitBtn.disabled = false;
+    }
+});

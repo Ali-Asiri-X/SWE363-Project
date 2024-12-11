@@ -1,3 +1,20 @@
+// Constants
+const API_BASE_URL = 'http://localhost:3000';
+let STUDENT_ID = '';
+
+// Function to get auth headers
+function getAuthHeaders() {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        window.location.replace('/loginPage.html');
+        return {};
+    }
+    return {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+    };
+}
+
 // Function to create a card
 function createCard(team) {
     const card = document.createElement('div');
@@ -40,13 +57,29 @@ function renderCards(teamsData) {
 
 // Function to fetch teams from the server
 function fetchTeams() {
-    const studentId = '6755e375d5460275e3f3862c'; // Replace with actual student ID
+    STUDENT_ID = localStorage.getItem('user_id');
+    if (!STUDENT_ID) {
+        window.location.replace('/loginPage.html');
+        return;
+    }
+
     const placeholders = document.querySelectorAll('.placeholder-card');
     placeholders.forEach(card => card.style.display = 'block');
     
-    fetch(`http://localhost:3000/team/all/${studentId}`)
-        .then(response => response.json())
+    fetch(`${API_BASE_URL}/team/all/${STUDENT_ID}`, {
+        headers: getAuthHeaders()
+    })
+        .then(response => {
+            if (response.status === 401) {
+                localStorage.removeItem('token');
+                window.location.replace('/loginPage.html');
+                return;
+            }
+            return response.json();
+        })
         .then(data => {
+            if (!data) return;
+            
             placeholders.forEach(card => card.style.display = 'none');
             const cardContainer = document.getElementById('cardContainer');
             
@@ -118,5 +151,34 @@ function showRequestToast(teamName) {
     }, 10); // Small delay to ensure the toast is properly reset
 }
 
-// Initialize when DOM is loaded
-document.addEventListener('DOMContentLoaded', fetchTeams);
+// Handle auth check on DOM load
+document.addEventListener('DOMContentLoaded', async function() {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        window.location.replace('/loginPage.html');
+        return;
+    }
+
+    try {
+        // Verify token on load
+        const verifyResponse = await fetch(`${API_BASE_URL}/auth/verify`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (!verifyResponse.ok) {
+            localStorage.removeItem('token');
+            window.location.replace('/loginPage.html');
+            return;
+        }
+
+        // Initialize app if token is valid
+        STUDENT_ID = localStorage.getItem('user_id');
+        fetchTeams();
+    } catch (error) {
+        console.error('Auth error:', error);
+        localStorage.removeItem('token');
+        window.location.replace('/loginPage.html');
+    }
+});

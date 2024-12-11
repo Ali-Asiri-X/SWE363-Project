@@ -27,48 +27,51 @@ app.use(cors());
 app.use(express.json());
 app.use(cookieParser()); // Add cookie parsing
 
-// // Serve public assets that don't need protection
-// app.use('/css', express.static(path.join(__dirname, 'public/css')));
-// app.use('/js', express.static(path.join(__dirname, 'public/js')));
-// app.use('/images', express.static(path.join(__dirname, 'public/images')));
+// Serve public assets that don't need protection
+app.use('/css', express.static(path.join(__dirname, 'public/css')));
+app.use('/js', express.static(path.join(__dirname, 'public/js')));
+app.use('/images', express.static(path.join(__dirname, 'public/images')));
 
 // Public routes
 app.use('/auth', authRoutes);
 
 // Add this middleware to protect HTML files
 const protectHtmlRoutes = (req, res, next) => {
-    // Allow public routes
-    const publicFiles = ['/loginPage.html', '/createaccountpage.html'];
-    if (publicFiles.includes(req.path)) {
-        return next();
-    }
+  const publicFiles = ['/loginPage.html', '/createaccountpage.html', '/', "/admin-view-teams.html"];
+  console.log(`Request path: ${req.path}`); // Log the requested path
+  
+  if (publicFiles.includes(req.path)) {
+      return next();
+  }
 
-    // Check if requesting HTML file
-    if (req.path.endsWith('.html')) {
-        const token = req.header('Authorization')?.replace('Bearer ', '') || 
-                     req.cookies?.token;
-        
-        if (!token) {
-            return res.redirect('/loginPage.html');
-        }
+  if (req.path.endsWith('.html')) {
+      const token = req.cookies?.token;
+      console.log(`Token: ${token}`); // Log the token
+      
+      if (!token) {
+          console.log('No token, redirecting to login page.');
+          return res.redirect('/loginPage.html');
+      }
 
-        try {
-            jwt.verify(token, JWT_SECRET);
-            next();
-        } catch (error) {
-            res.clearCookie('token');
-            return res.redirect('/loginPage.html');
-        }
-    } else {
-        next();
-    }
+      try {
+          jwt.verify(token, "your_secret_key");
+          console.log('Token verified, proceeding.');
+          next();
+      } catch (error) {
+          console.log('Token verification failed, clearing cookie and redirecting.');
+          res.clearCookie('token');
+          return res.redirect('/loginPage.html');
+      }
+  } else {
+      next();
+  }
 };
 
 // Protect HTML routes
 app.use(protectHtmlRoutes);
 
 // Protected routes
-app.use('/team', authMiddleware, teamRoutes);
+app.use('/team', teamRoutes);
 app.use('/student', authMiddleware, studentRoutes);
 // app.use('/scheme', authMiddleware, schemeRoutes);
 
@@ -78,6 +81,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Catch-all route to serve index.html for SPA
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'loginPage.html'));
+});
+
+// Serve student homepage
+app.get('/student-homepage.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'student-homepage.html'));
 });
 
 // Start the server

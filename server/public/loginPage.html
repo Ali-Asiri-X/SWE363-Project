@@ -61,37 +61,27 @@
         const data = Object.fromEntries(formData);
 
         try {
-            // Send login data to the backend
             const response = await fetch('http://localhost:3000/auth/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data),
+                credentials: 'include'
             });
 
             const result = await response.json();
 
-            if (response.ok) {
-                alert('Login successful!');
-
-                // Save the token in localStorage
+            if (response.ok && result.token) {
+                alert(result.redirectUrl);
+                localStorage.setItem('user_id', result.user_id);
                 localStorage.setItem('token', result.token);
-
-                // Redirect based on user role
-                if (result.role === 'moderator') {
-                    window.location.href = '/moderator-homepage.html';
-                } else if (result.role === 'student') {
-                    window.location.href = '/student-homepage.html';
-                } else if (result.role === 'admin') {
-                    window.location.href = '/admin-homepage.html';
-                } else {
-                    alert('Unknown role. Contact support.');
-                }
+                document.cookie = `token=${result.token}; path=/;`;
+                window.location.href = result.redirectUrl;
             } else {
-                alert('Error: ${result.message}');
+                alert(result.message || 'Login failed');
             }
         } catch (error) {
-            console.error('Error:', error);
-            alert('An error occurred. Please try again later.');
+            console.error('Login error:', error);
+            alert('An error occurred during login');
         }
     });
 </script>
