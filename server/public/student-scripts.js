@@ -2,15 +2,12 @@
 
 // Constants
 const API_BASE_URL = 'http://localhost:3000';
-let STUDENT_ID = ''; // Temporary hardcoded ID
-
-//initializeApp();
-
+let STUDENT_ID = '';
 let hasTeam = false;
-let teamId=null;
+let teamId = null;
 
 // Add auth check and token handling
-document.addEventListener('DOMContentLoaded', async function() {
+document.addEventListener('DOMContentLoaded', async function () {
     const token = localStorage.getItem('token');
     if (!token) {
         window.location.replace('/loginPage.html');
@@ -32,7 +29,6 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
 
         // Initialize app if token is valid
-
         STUDENT_ID = localStorage.getItem('user_id');
         await initializeApp();
     } catch (error) {
@@ -61,7 +57,7 @@ async function initializeApp() {
         getStudentProfile(),
         checkTeamStatus()
     ]);
-    
+
     updateUIState();
 }
 
@@ -87,7 +83,7 @@ async function handleProfileSubmit(event) {
     event.preventDefault();
     const submitButton = editProfileForm.querySelector('button[type="submit"]');
     submitButton.disabled = true;
-    
+
     try {
         // Get form data
         const formData = {
@@ -143,12 +139,12 @@ editProfileForm.addEventListener('submit', handleProfileSubmit);
 
 document.getElementById('editProfileBtn').addEventListener('click', () => {
     const userInfo = document.getElementById('userInfo').children;
-    
+
     editProfileForm.profileName.value = userInfo[0].firstChild.textContent;
     editProfileForm.profileWhatsApp.value = userInfo[1].textContent.replace('WhatsApp: ', '');
     editProfileForm.profileMajor.value = userInfo[2].textContent.replace('Major: ', '');
     editProfileForm.profileDescription.value = userInfo[3].textContent;
-    
+
     editProfileModal.show();
 });
 
@@ -210,7 +206,7 @@ async function checkTeamStatus() {
         const response = await fetch(`${API_BASE_URL}/student/team/${STUDENT_ID}`, {
             headers: getAuthHeaders()
         });
-        
+
         if (response.status === 401) {
             localStorage.removeItem('token');
             window.location.replace('/loginPage.html');
@@ -223,11 +219,11 @@ async function checkTeamStatus() {
 
         const data = await response.json();
         hasTeam = data.hasTeam;
-        
+
         if (hasTeam) {
             // Populate team data
             populateTeamData(data.team);
-            teamId=data.team._id;
+            teamId = data.team._id;
         }
 
         updateUIState();
@@ -288,7 +284,7 @@ function createMemberCard(member) {
 function createRequestCard(request) {
     // Format WhatsApp number
     const formattedNumber = request.whatsappNumber.replace(/\D/g, '');
-    
+
     const div = document.createElement('div');
     div.className = 'd-flex align-items-center mb-3';
     div.innerHTML = `
@@ -416,7 +412,9 @@ document.getElementById("ExitBtn").addEventListener('click', async () => {
     try {
         // Get team ID from state
         console.log("reached here");
-        const response = await fetch(`${API_BASE_URL}/student/team/${STUDENT_ID}`);
+        const response = await fetch(`${API_BASE_URL}/student/team/${STUDENT_ID}`, {
+            headers: getAuthHeaders()
+        });
         const data = await response.json();
 
         if (!data.hasTeam) {
@@ -430,9 +428,7 @@ document.getElementById("ExitBtn").addEventListener('click', async () => {
             `${API_BASE_URL}/student/team/${teamId}/leave/${STUDENT_ID}`,
             {
                 method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
+                headers: getAuthHeaders()
             }
         );
 
@@ -462,11 +458,11 @@ async function deleteMember(memberId, memberName, element) {
                 `${API_BASE_URL}/student/team/${teamId}/leave/${memberId}`,
                 {
                     method: 'DELETE',
-                    headers: { 'Content-Type': 'application/json' }
+                    headers: getAuthHeaders()
                 }
             );
             if (!response.ok) throw new Error('Failed to remove member');
-            console.log("element",element);
+            console.log("element", element);
             element.parentElement.parentElement.remove();
         }
     } catch (error) {
@@ -482,7 +478,7 @@ async function acceptRequest(requestId, requestName, element) {
                 `${API_BASE_URL}/student/team/${teamId}/accept/${requestId}`,
                 {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' }
+                    headers: getAuthHeaders()
                 }
             );
             if (!response.ok) throw new Error('Failed to accept request');
@@ -494,14 +490,14 @@ async function acceptRequest(requestId, requestName, element) {
     }
 }
 
-async function deleteRequest(requestId, requestName,element) {
+async function deleteRequest(requestId, requestName, element) {
     try {
         if (confirm(`Reject request from ${requestName}?`)) {
             const response = await fetch(
                 `${API_BASE_URL}/student/team/${teamId}/reject/${requestId}`,
                 {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' }
+                    headers: getAuthHeaders()
                 }
             );
             if (!response.ok) throw new Error('Failed to reject request');
@@ -520,12 +516,12 @@ const infoModal = new bootstrap.Modal(document.getElementById('infoModal'));
 function showStudentInfo(detailsElement, description) {
     const name = detailsElement.querySelector('h5').textContent;
     const major = detailsElement.querySelector('p').textContent.replace('Major: ', '');
-    
+
     // Update modal content
     document.getElementById('infoModalLabel').textContent = name;
-    document.querySelector('#infoModal .student-description').textContent = 
+    document.querySelector('#infoModal .student-description').textContent =
         description;
-        
+
     infoModal.show();
 }
 
@@ -545,11 +541,17 @@ document.getElementById('createTeamForm').addEventListener('submit', async (e) =
     submitBtn.disabled = true;
 
     try {
+        // Get and verify token
+        const token = localStorage.getItem('token');
+        if (!token) {
+            throw new Error('Not authenticated');
+        }
+
         // Get all majors
         const majors = [];
-        for(let i = 1; i <= 6; i++) {
+        for (let i = 1; i <= 6; i++) {
             const major = document.getElementById(`major${i}`).value;
-            if(!major) {
+            if (!major) {
                 throw new Error(`Please select Major ${i}`);
             }
             majors.push(major);
@@ -565,11 +567,15 @@ document.getElementById('createTeamForm').addEventListener('submit', async (e) =
 
         const response = await fetch(`${API_BASE_URL}/student/team/create`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: getAuthHeaders(),
             body: JSON.stringify(teamData)
         });
+
+        if (response.status === 401) {
+            localStorage.removeItem('token');
+            window.location.replace('/loginPage.html');
+            return;
+        }
 
         if (!response.ok) {
             throw new Error('Failed to create team');
@@ -583,7 +589,12 @@ document.getElementById('createTeamForm').addEventListener('submit', async (e) =
         alert('Team created successfully!');
 
     } catch (error) {
-        alert(error.message || 'Failed to create team');
+        console.error('Error creating team:', error);
+        if (error.message === 'Not authenticated') {
+            window.location.replace('/loginPage.html');
+        } else {
+            alert(error.message || 'Failed to create team');
+        }
     } finally {
         submitBtn.disabled = false;
     }

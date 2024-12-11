@@ -6,9 +6,7 @@ const Student = require('../models/student');
 
 const router = express.Router();
 
-// Secret for signing JWT tokens
-const JWT_SECRET = 'your_secret_key'; // Replace with a secure key
-
+const JWT_SECRET = 'your_secret_key';
 // Auth Middleware
 const authMiddleware = (req, res, next) => {
     try {
@@ -56,7 +54,7 @@ router.post('/login', async (req, res) => {
 
     try {
 
-        if (username === 'admin' && password === 'admin') {
+        if (username === 'admin' && password === 'Admin@1234') {
             return res.status(200).json({ 
                 success: true,
                 role: 'admin',
@@ -92,25 +90,25 @@ router.post('/login', async (req, res) => {
             });
         }
 
-        // Check if it's a moderator
-        const moderator = await Moderator.findOne({ username: username });
-        if (moderator) {
-            const isMatch = await bcrypt.compare(password, moderator.password);
-            if (!isMatch) return res.status(401).json({ message: 'Invalid credentials' });
+        // // Check if it's a moderator
+        // const moderator = await Moderator.findOne({ username: username });
+        // if (moderator) {
+        //     const isMatch = await bcrypt.compare(password, moderator.password);
+        //     if (!isMatch) return res.status(401).json({ message: 'Invalid credentials' });
 
-            const token = jwt.sign(
-                { id: moderator._id, name: moderator.username, role: 'moderator' },
-                JWT_SECRET,
-                { expiresIn: '30m' }
-            );
-            res.cookie('token', token, { httpOnly: true });
-            return res.status(200).json({ 
-                message: 'Login successful', 
-                role: 'moderator', 
-                token,
-                redirectUrl: '/moderator-homepage.html'
-            });
-        }
+        //     const token = jwt.sign(
+        //         { id: moderator._id, name: moderator.username, role: 'moderator' },
+        //         JWT_SECRET,
+        //         { expiresIn: '30m' }
+        //     );
+        //     res.cookie('token', token, { httpOnly: true });
+        //     return res.status(200).json({ 
+        //         message: 'Login successful', 
+        //         role: 'moderator', 
+        //         token,
+        //         redirectUrl: '/moderator-homepage.html'
+        //     });
+        // }
 
         return res.status(404).json({ message: 'User not found' });
 
@@ -119,47 +117,30 @@ router.post('/login', async (req, res) => {
     }
 });
 
-// Protected Route (Example: Dashboard)
-router.get('/dashboard', (req, res) => {
-    const authHeader = req.headers.authorization;
-    if (!authHeader) return res.status(401).json({ message: 'Unauthorized. No token provided.' });
+// // Add new endpoint to create moderator
+// router.post('/create-moderator', async (req, res) => {
+//     const { username, password, profileImage } = req.body;
 
-    const token = authHeader.split(' ')[1]; // Extract the token
-    try {
-        const decoded = jwt.verify(token, JWT_SECRET); // Verify the token
-        res.status(200).json({
-            message: 'Welcome, ${decoded.name}!',
-            user: decoded,
-        });
-    } catch (error) {
-        res.status(403).json({ message: 'Invalid or expired token' });
-    }
-});
+//     try {
+//         // Check if moderator already exists
+//         const existingModerator = await Moderator.findOne({ username });
+//         if (existingModerator) {
+//             return res.status(400).json({ message: 'Moderator already exists' });
+//         }
 
-// Add new endpoint to create moderator
-router.post('/create-moderator', async (req, res) => {
-    const { username, password, profileImage } = req.body;
+//         const hashedPassword = await bcrypt.hash(password, 10);
+//         const newModerator = new Moderator({
+//             username,
+//             password: hashedPassword,
+//             profileImage
+//         });
 
-    try {
-        // Check if moderator already exists
-        const existingModerator = await Moderator.findOne({ username });
-        if (existingModerator) {
-            return res.status(400).json({ message: 'Moderator already exists' });
-        }
-
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const newModerator = new Moderator({
-            username,
-            password: hashedPassword,
-            profileImage
-        });
-
-        await newModerator.save();
-        res.status(201).json({ message: 'Moderator created successfully' });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-});
+//         await newModerator.save();
+//         res.status(201).json({ message: 'Moderator created successfully' });
+//     } catch (error) {
+//         res.status(500).json({ message: error.message });
+//     }
+// });
 
 // Get all moderators
 router.get('/moderators', async (req, res) => {
@@ -181,5 +162,6 @@ router.get('/verify', authMiddleware, (req, res) => {
 
 module.exports = { 
     router,
-    authMiddleware 
+    authMiddleware,
+    JWT_SECRET 
 };

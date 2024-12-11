@@ -109,11 +109,9 @@ function fetchTeams() {
 function requestToJoin(teamId, teamName) {
     fetch(`http://localhost:3000/team/join/${teamId}`, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
+        headers: getAuthHeaders(),
         body: JSON.stringify({
-            studentId: '6755e375d5460275e3f3862c' // Replace with actual student ID
+            studentId: STUDENT_ID
         })
     })
     .then(response => response.json())

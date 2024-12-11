@@ -74,22 +74,39 @@ router.post("/team/create", async (req, res) => {
   }
 });
 
-// Get student's team details
+// Modified Get student's team details route
 router.get("/team/:studentId", async (req, res) => {
   try {
     const student = await Student.findById(req.params.studentId);
+    
+    // Check if student exists
+    if (!student) {
+      return res.status(404).json({ message: "Student not found" });
+    }
+
+    // Check if student has a team
     if (!student.teamId) {
       return res.json({ hasTeam: false });
     }
     
+    // Try to find the team
     const team = await Team.findById(student.teamId)
       .populate('members', 'name major whatsappNumber description')
       .populate('pendingRequests', 'name major description');
       
+    // If team doesn't exist but student has teamId, reset student's teamId
+    if (!team) {
+      student.teamId = null;
+      await student.save();
+      return res.json({ hasTeam: false });
+    }
+    
+    // Return team details if everything is valid
     res.json({
       hasTeam: true,
       team: team
     });
+
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

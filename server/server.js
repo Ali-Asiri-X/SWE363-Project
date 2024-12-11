@@ -27,17 +27,12 @@ app.use(cors());
 app.use(express.json());
 app.use(cookieParser()); // Add cookie parsing
 
-// Serve public assets that don't need protection
-app.use('/css', express.static(path.join(__dirname, 'public/css')));
-app.use('/js', express.static(path.join(__dirname, 'public/js')));
-app.use('/images', express.static(path.join(__dirname, 'public/images')));
-
 // Public routes
 app.use('/auth', authRoutes);
 
 // Add this middleware to protect HTML files
 const protectHtmlRoutes = (req, res, next) => {
-  const publicFiles = ['/loginPage.html', '/createaccountpage.html', '/', "/admin-view-teams.html"];
+  const publicFiles = ['/loginPage.html', '/createAccountPage.html', '/', "/admin-view-teams.html"];
   console.log(`Request path: ${req.path}`); // Log the requested path
   
   if (publicFiles.includes(req.path)) {
@@ -54,7 +49,7 @@ const protectHtmlRoutes = (req, res, next) => {
       }
 
       try {
-          jwt.verify(token, "your_secret_key");
+          jwt.verify(token, JWT_SECRET);
           console.log('Token verified, proceeding.');
           next();
       } catch (error) {
@@ -81,11 +76,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Catch-all route to serve index.html for SPA
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'loginPage.html'));
-});
-
-// Serve student homepage
-app.get('/student-homepage.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'student-homepage.html'));
 });
 
 // Start the server
