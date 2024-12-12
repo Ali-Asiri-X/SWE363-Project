@@ -1,33 +1,35 @@
 const express = require("express");
 const router = express.Router();
+const jwt = require('jsonwebtoken');
+const { JWT_SECRET } = require('../routes/authRoutes');
 
 const TeamModal = require("../models/team");
 
-//Handle adding new items
-router.post("/add", async (req, res) => {
-  const data = new TeamModal({
-    teamName: req.body.teamName,
-    description: req.body.description,
-    majors: req.body.majors,
-  });
-  try {
-    const dataToSave = await data.save();
-    res.status(200).json(dataToSave);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-});
+// //Handle adding new items
+// router.post("/add", async (req, res) => {
+//   const data = new TeamModal({
+//     teamName: req.body.teamName,
+//     description: req.body.description,
+//     majors: req.body.majors,
+//   });
+//   try {
+//     const dataToSave = await data.save();
+//     res.status(200).json(dataToSave);
+//   } catch (error) {
+//     res.status(400).json({ message: error.message });
+//   }
+// });
 
-// Route to handle creating multiple teams
-router.post("/bulk", async (req, res) => {
-    try {
-      const teams = req.body;
-      const createdTeams = await TeamModal.insertMany(teams);
-      res.status(201).json(createdTeams);
-    } catch (error) {
-      res.status(400).json({ message: error.message });
-    }
-  });
+// // Route to handle creating multiple teams
+// router.post("/bulk", async (req, res) => {
+//     try {
+//       const teams = req.body;
+//       const createdTeams = await TeamModal.insertMany(teams);
+//       res.status(201).json(createdTeams);
+//     } catch (error) {
+//       res.status(400).json({ message: error.message });
+//     }
+//   });
 
 //Get All Items
 router.get("/all", async (req, res) => {
@@ -39,8 +41,23 @@ router.get("/all", async (req, res) => {
   }
 });
 
+// Admin role verification middleware
+const adminMiddleware = (req, res, next) => {
+  const token = req.header('Authorization')?.replace('Bearer ', '');
+  
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    if (decoded.role !== 'admin') {
+      return res.status(403).json({ message: 'Access denied: Admin privileges required' });
+    }
+    next();
+  } catch (error) {
+    res.status(401).json({ message: 'Invalid token' });
+  }
+};
+
 // Route to handle deleting a team
-router.delete("/delete/:id", async (req, res) => {
+router.delete("/delete/:id", adminMiddleware, async (req, res) => {
   try {
     const id = req.params.id;
     const deletedTeam = await TeamModal.findByIdAndDelete(id);

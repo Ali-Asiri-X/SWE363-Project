@@ -1,12 +1,21 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken'); // Import JWT
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
+
 const Moderator = require('../models/moderator');
 const Student = require('../models/student');
 
 const router = express.Router();
 
-const JWT_SECRET = 'Zz@11223344';
+// Use environment variable
+const JWT_SECRET = process.env.JWT_SECRET;
+
+if (!JWT_SECRET) {
+    console.error('JWT_SECRET is not defined in environment variables');
+    process.exit(1);
+}
+
 // Auth Middleware
 const authMiddleware = (req, res, next) => {
     try {
@@ -59,13 +68,13 @@ router.post('/login', async (req, res) => {
             const token = jwt.sign(
                 { id: 'admin', role: 'admin' },
                 JWT_SECRET,
-                { expiresIn: '30m' }
+                { expiresIn: '10m' }
             );
 
             // Set token in cookie
             res.cookie('token', token, {
                 httpOnly: true,
-                secure: process.env.NODE_ENV === 'production',
+                secure: process.env.NODE_ENV,
                 sameSite: 'strict'
             });
 
@@ -86,13 +95,13 @@ router.post('/login', async (req, res) => {
             const token = jwt.sign(
                 { id: user._id, name: user.name, role: 'student' },
                 JWT_SECRET,
-                { expiresIn: '2m' }
+                { expiresIn: '10m' }
             );
 
             // Set token in cookie
             res.cookie('token', token, {
                 httpOnly: true,
-                secure: process.env.NODE_ENV === 'production',
+                secure: process.env.NODE_ENV,
                 sameSite: 'strict'
             });
 

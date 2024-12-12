@@ -8,16 +8,14 @@ const studentRoutes = require("./routes/studentRoutes"); // Student Routes
 const { router: authRoutes, authMiddleware, JWT_SECRET } = require('./routes/authRoutes'); // Authentication Routes
 const path = require('path'); // Import path module
 // const teamSchemes = require("./routes/teamSchemes"); // Scheme Routes
+
 // Connect to MongoDB
-mongoose.connect("mongodb+srv://ziyad:Zzz%401234@testcluster.cpids.mongodb.net/team-formation-database", {
-});
-const database = mongoose.connection;
-
-// Handle connection errors
-database.on("error", (error) => console.log(error));
-
-// Confirm successful connection
-database.once("connected", () => console.log("Database Connected"));
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => {
+    console.log("Database Connected");
+  }).catch((error) => {
+    console.log("Database Connection Error:", error);
+  });
 
 // Initialize Express
 const app = express(); // An instance of the express application
@@ -41,7 +39,7 @@ const protectHtmlRoutes = (req, res, next) => {
 
   if (req.path.endsWith('.html')) {
     const token = req.cookies?.token;
-    console.log(`Token: ${token}`); 
+    console.log(`Token: ${token}`);
 
     if (!token) {
       console.log('No token, redirecting to login page.');
@@ -58,7 +56,12 @@ const protectHtmlRoutes = (req, res, next) => {
         console.log('Access denied: insufficient permissions');
         return res.status(403).send('Access denied');
       }
-      
+
+      if ((req.path === '/student-homepage.html' || req.path === '/student-team-proposals.html') && decodedToken.role !== 'student') {
+        console.log('Access denied: insufficient permissions');
+        return res.status(403).send('Access denied');
+      }
+
       next();
     } catch (error) {
       console.log('Token verification failed:', error.message);
@@ -74,7 +77,7 @@ const protectHtmlRoutes = (req, res, next) => {
 app.use(protectHtmlRoutes);
 
 // Protected routes
-app.use('/team', authMiddleware,teamRoutes);
+app.use('/team', authMiddleware, teamRoutes);
 app.use('/student', authMiddleware, studentRoutes);
 // app.use('/scheme', authMiddleware, schemeRoutes);
 
