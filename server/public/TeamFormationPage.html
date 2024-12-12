@@ -127,7 +127,7 @@
 
     async function fetchSchemes(){ 
 
-      fetch('http://localhost:3000/schemes/all')
+      fetch('http://ec2-54-90-250-174.compute-1.amazonaws.com:80/schemes/all')
         .then(response => response.json())
         .then(data => {
             handleSchemes(data); //function that handles schemes
@@ -205,7 +205,7 @@
 
 
       try {
-        const response = await fetch('http://localhost:3000/team/add', {//dc url
+        const response = await fetch('http://ec2-54-90-250-174.compute-1.amazonaws.com:80/team/add', {//dc url
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ //dc these below

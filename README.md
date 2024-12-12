@@ -72,7 +72,7 @@ npm run dev
 ```
 
 ### Usage
-1. Access the application at http://localhost:3000
+1. Access the application at http://ec2-54-90-250-174.compute-1.amazonaws.com:80
     1) To view student pages enter (Email = ali@example.com, password = Aa11223344)
     2) To view admin page enter (Email = admin, password = Admin@1234)
 
