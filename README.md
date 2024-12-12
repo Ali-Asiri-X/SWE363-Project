@@ -53,7 +53,7 @@
 
 1. Clone the repository
 ```bash
-git clone [https://github.com/Ali-Asiri-X/SWE363-Project.git]
+git clone https://github.com/Ali-Asiri-X/SWE363-Project.git
 ```
 
 2. Install server dependencies
