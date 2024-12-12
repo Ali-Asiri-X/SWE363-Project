@@ -92,11 +92,18 @@ router.post("/join/:teamId", async (req, res) => {
 router.get("/all/:studentId", async (req, res) => {
   try {
     const studentId = req.params.studentId;
-    const teams = await TeamModal.find();
+
+    // Find all teams where student is not a member
+    const teams = await TeamModal.find({
+      members: { $ne: studentId } // Exclude teams where student is a member
+    });
+
+    // Add request status for each team
     const teamsWithStatus = teams.map(team => ({
       ...team.toObject(),
       hasRequestPending: team.checkRequestStatus(studentId)
     }));
+
     res.json(teamsWithStatus);
   } catch (error) {
     res.status(500).json({ message: error.message });
