@@ -65,8 +65,9 @@ npm install
 3. Configure environment variables Create a .env file in the server directory with:
 MONGODB_URI=mongodb+srv://ziyad:Fvz49UPtx9lVET4q@testcluster.cpids.mongodb.net/team-formation-database
 JWT_SECRET=write_any_jwt_secret_you_choose
+NODE_ENV=development
 
-4. Start the server
+5. Start the server
 ```bash
 npm run dev
 ```
