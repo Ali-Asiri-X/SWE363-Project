@@ -1,3 +1,19 @@
+// Constants
+const API_BASE_URL = 'http://localhost:3000';
+
+// Function to get auth headers
+function getAuthHeaders() {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        window.location.replace('/loginPage.html');
+        return {};
+    }
+    return {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+    };
+}
+
 let currentTeamIndex = null;
 let currentTeamId = null;
 let teams = [];
@@ -49,10 +65,18 @@ function showDeleteToast(index, id) {
 // Function to delete the team
 function deleteTeam() {
     if (currentTeamIndex !== null && currentTeamId !== null) {
-        fetch(`http://localhost:3000/team/delete/${currentTeamId}`, {
-            method: 'DELETE'
+        fetch(`${API_BASE_URL}/team/delete/${currentTeamId}`, {
+            method: 'DELETE',
+            headers: getAuthHeaders()
         })
-        .then(response => response.json())
+        .then(response => {
+            if (response.status === 401) {
+                localStorage.removeItem('token');
+                window.location.replace('/loginPage.html');
+                return;
+            }
+            return response.json();
+        })
         .then(data => {
             if (data.message === "Team deleted successfully") {
                 teams.splice(currentTeamIndex, 1);
@@ -74,8 +98,17 @@ function fetchTeams() {
     const placeholders = document.querySelectorAll('.placeholder-card');
     placeholders.forEach(card => card.style.display = 'block');
     
-    fetch('http://localhost:3000/team/all')
-        .then(response => response.json())
+    fetch(`${API_BASE_URL}/team/all`, {
+        headers: getAuthHeaders()
+    })
+        .then(response => {
+            if (response.status === 401) {
+                localStorage.removeItem('token');
+                window.location.replace('/loginPage.html');
+                return;
+            }
+            return response.json();
+        })
         .then(data => {
             placeholders.forEach(card => card.style.display = 'none');
             teams = data;
@@ -106,5 +139,33 @@ function fetchTeams() {
 // Add event listener to the confirm delete button
 document.getElementById('confirmDeleteBtn').addEventListener('click', deleteTeam);
 
-// Fetch and render cards on page load
-document.addEventListener('DOMContentLoaded', fetchTeams);
+// Add auth check on page load
+document.addEventListener('DOMContentLoaded', async function() {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        window.location.replace('/loginPage.html');
+        return;
+    }
+
+    try {
+        // Verify token on load
+        const verifyResponse = await fetch(`${API_BASE_URL}/auth/verify`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (!verifyResponse.ok) {
+            localStorage.removeItem('token');
+            window.location.replace('/loginPage.html');
+            return;
+        }
+
+        // Initialize app if token is valid
+        fetchTeams();
+    } catch (error) {
+        console.error('Auth error:', error);
+        localStorage.removeItem('token');
+        window.location.replace('/loginPage.html');
+    }
+});

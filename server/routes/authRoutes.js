@@ -6,12 +6,12 @@ const Student = require('../models/student');
 
 const router = express.Router();
 
-const JWT_SECRET = 'your_secret_key';
+const JWT_SECRET = 'Zz@11223344';
 // Auth Middleware
 const authMiddleware = (req, res, next) => {
     try {
         const token = req.header('Authorization')?.replace('Bearer ', '');
-        
+
         if (!token) {
             return res.status(401).json({ message: 'Access denied. No token provided.' });
         }
@@ -53,14 +53,30 @@ router.post('/login', async (req, res) => {
     const { username, password } = req.body;
 
     try {
+        // Admin login check
+        if (username === "admin" && password === "Admin@1234") {
+            // Generate JWT for admin
+            const token = jwt.sign(
+                { id: 'admin', role: 'admin' },
+                JWT_SECRET,
+                { expiresIn: '30m' }
+            );
 
-        if (username === 'admin' && password === 'Admin@1234') {
-            return res.status(200).json({ 
+            // Set token in cookie
+            res.cookie('token', token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'strict'
+            });
+
+            return res.status(200).json({
                 success: true,
+                token,
                 role: 'admin',
                 redirectUrl: '/admin-view-teams.html'
             });
         }
+
         // Check if it's a regular student
         const user = await Student.findOne({ email: username });
         if (user) {
@@ -70,18 +86,18 @@ router.post('/login', async (req, res) => {
             const token = jwt.sign(
                 { id: user._id, name: user.name, role: 'student' },
                 JWT_SECRET,
-                { expiresIn: '30m' }
+                { expiresIn: '2m' }
             );
-            
+
             // Set token in cookie
-            res.cookie('token', token, { 
+            res.cookie('token', token, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
                 sameSite: 'strict'
             });
 
             // Send response with token and redirect URL
-            return res.status(200).json({ 
+            return res.status(200).json({
                 success: true,
                 token,
                 role: 'student',
@@ -160,8 +176,8 @@ router.get('/verify', authMiddleware, (req, res) => {
     });
 });
 
-module.exports = { 
+module.exports = {
     router,
     authMiddleware,
-    JWT_SECRET 
+    JWT_SECRET
 };

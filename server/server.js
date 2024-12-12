@@ -32,33 +32,41 @@ app.use('/auth', authRoutes);
 
 // Add this middleware to protect HTML files
 const protectHtmlRoutes = (req, res, next) => {
-  const publicFiles = ['/loginPage.html', '/createAccountPage.html', '/', "/admin-view-teams.html"];
+  const publicFiles = ['/loginPage.html', '/createAccountPage.html', '/'];
   console.log(`Request path: ${req.path}`); // Log the requested path
-  
+
   if (publicFiles.includes(req.path)) {
-      return next();
+    return next();
   }
 
   if (req.path.endsWith('.html')) {
-      const token = req.cookies?.token;
-      console.log(`Token: ${token}`); // Log the token
-      
-      if (!token) {
-          console.log('No token, redirecting to login page.');
-          return res.redirect('/loginPage.html');
-      }
+    const token = req.cookies?.token;
+    console.log(`Token: ${token}`); 
 
-      try {
-          jwt.verify(token, JWT_SECRET);
-          console.log('Token verified, proceeding.');
-          next();
-      } catch (error) {
-          console.log('Token verification failed, clearing cookie and redirecting.');
-          res.clearCookie('token');
-          return res.redirect('/loginPage.html');
+    if (!token) {
+      console.log('No token, redirecting to login page.');
+      return res.redirect('/loginPage.html');
+    }
+    try {
+      // Store the decoded token
+      const decodedToken = jwt.verify(token, JWT_SECRET);
+      console.log('Token verified, proceeding.');
+      console.log('User role:', decodedToken.role);
+
+      // Check if the path is 'admin-view-teams.html' and role is not 'admin'
+      if (req.path === '/admin-view-teams.html' && decodedToken.role !== 'admin') {
+        console.log('Access denied: insufficient permissions');
+        return res.status(403).send('Access denied');
       }
-  } else {
+      
       next();
+    } catch (error) {
+      console.log('Token verification failed:', error.message);
+      res.clearCookie('token');
+      return res.redirect('/loginPage.html');
+    }
+  } else {
+    next();
   }
 };
 
@@ -66,7 +74,7 @@ const protectHtmlRoutes = (req, res, next) => {
 app.use(protectHtmlRoutes);
 
 // Protected routes
-app.use('/team', teamRoutes);
+app.use('/team', authMiddleware,teamRoutes);
 app.use('/student', authMiddleware, studentRoutes);
 // app.use('/scheme', authMiddleware, schemeRoutes);
 
