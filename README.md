@@ -85,8 +85,8 @@ server/
 └── server.js       # Main application file
 
 ## Contribution
-    1) ALI ASIRI worked on (student-homepage.html) handling all related frontend and backend tasks, as well as the necessary integration work for the project.
-    2) ZIYAD ALSUFYANI worked on (admin-view-teams.html, student-team-proposals.html) handling all related frontend and backend tasks, as well as Token Authuntication using JWT.
+    1) ALI ASIRI worked on (student-homepage.html) handling all related frontend and backend tasks including related database designing, as well as the necessary integration between different members' works for the project.
+    2) ZIYAD ALSUFYANI worked on (admin-view-teams.html, student-team-proposals.html) handling all related frontend and backend tasks including related database designing, as well as Token authentication using JWT.
     3) JAWAD ALSHABIB worked on (TeamFormationPage.html, parts of student from a team page.html) and all related frontend.
-    4) MOHAMMED HABKARIE worked on (moderator homepage.html, admin page.html, parts of student from a team page.html) the related and backend.
+    4) MOHAMMED HABKARIE worked on (moderator homepage.html, admin page.html, parts of student from a team page.html) on the related and backend.
     5) OSAMA HAKAMI worked on (loginPage.html, createAccountPage.html) and all related frontend and some backend tasks.
