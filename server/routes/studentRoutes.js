@@ -92,7 +92,7 @@ router.get("/team/:studentId", async (req, res) => {
     // Try to find the team
     const team = await Team.findById(student.teamId)
       .populate('members', 'name major whatsappNumber description')
-      .populate('pendingRequests', 'name major description');
+      .populate('pendingRequests', 'name major whatsappNumber description');
       
     // If team doesn't exist but student has teamId, reset student's teamId
     if (!team) {

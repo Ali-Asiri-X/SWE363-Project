@@ -273,7 +273,7 @@ function createMemberCard(member) {
                 </button>
             </a>
             <button class="btn btn-outline-danger btn-sm btn-md-normal delete-member" 
-                onclick="deleteMember('${member._id}', '${member.name}')">
+                onclick="deleteMember('${member._id}', '${member.name}',this)">
                 <i class="fas fa-trash"></i>
             </button>
         </div>
@@ -282,8 +282,6 @@ function createMemberCard(member) {
 }
 
 function createRequestCard(request) {
-    // Format WhatsApp number
-    const formattedNumber = request.whatsappNumber.replace(/\D/g, '');
 
     const div = document.createElement('div');
     div.className = 'd-flex align-items-center mb-3';
@@ -294,17 +292,17 @@ function createRequestCard(request) {
             <p class="mb-1">Major: ${request.major}</p>
         </div>
         <div class="ms-auto d-flex flex-wrap gap-2">
-            <a href="https://wa.me/${formattedNumber}" target="_blank">
+            <a href="https://wa.me/${request.whatsappNumber}" target="_blank">
                 <button class="btn btn-outline-success btn-sm btn-md-normal me-2">
                     <i class="fab fa-whatsapp"></i>
                 </button>
             </a>
             <button class="btn btn-outline-success btn-sm btn-md-normal me-md-2" 
-                onclick="acceptRequest('${request._id}', '${request.name}')">
+                onclick="acceptRequest('${request._id}', '${request.name}',this)">
                 <i class="fas fa-check"></i>
             </button>
             <button class="btn btn-outline-danger btn-sm btn-md-normal" 
-                onclick="deleteRequest('${request._id}', '${request.name}')">
+                onclick="deleteRequest('${request._id}', '${request.name}',this)">
                 <i class="fas fa-trash"></i>
             </button>
         </div>
