@@ -582,6 +582,7 @@ document.getElementById('createTeamForm').addEventListener('submit', async (e) =
         const data = await response.json();
         hasTeam = true;
         teamId = data._id;
+        checkTeamStatus();
         updateUIState();
         createTeamModal.hide();
         alert('Team created successfully!');
